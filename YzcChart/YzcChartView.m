@@ -120,8 +120,8 @@
 
         //划线
         CAShapeLayer *_chartLine = [CAShapeLayer layer];
-        _chartLine.lineCap = kCALineCapRound;
-        _chartLine.lineJoin = kCALineJoinBevel;
+        _chartLine.lineCap = kCALineCapRound;   //设置线条拐角帽的样式
+        _chartLine.lineJoin = kCALineJoinRound; //设置两条线连结点的样式
         _chartLine.fillColor   = [[UIColor whiteColor] CGColor];
         _chartLine.lineWidth   = 2.0;
         _chartLine.strokeEnd   = 0.0;
@@ -248,8 +248,9 @@
     gradientLayer.cornerRadius = 5;
     gradientLayer.masksToBounds = YES;
     gradientLayer.colors = @[(__bridge id)[UIColor colorWithRed:166/255.0 green:206/255.0 blue:247/255.0 alpha:0.5].CGColor,(__bridge id)[UIColor colorWithRed:237/255.0 green:246/255.0 blue:253/255.0 alpha:0.3].CGColor];
-//    gradientLayer.locations = @[@(0.5f),@(0.5),@(0.5)];
-    gradientLayer.locations = @[@(0.5f)];
+    gradientLayer.locations = @[@(0.2f),@(0.8),@(0.9)];
+//    gradientLayer.locations = @[@(0.5f)];
+    
     
     CALayer *baseLayer = [CALayer layer];
     [baseLayer addSublayer:gradientLayer];

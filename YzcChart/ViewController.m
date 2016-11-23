@@ -23,7 +23,7 @@
     view.isDrawPoint = NO;
     view.lineColor = [UIColor redColor];
     view.pointColor = [UIColor blueColor];
-    view.yLabels = @[@"60",@"120",@"140",@"180",@"60"];
+    view.yLabels = @[@"60",@"145",@"140",@"175",@"88"];
     view.xLabels = @[@"0min",@"30min",@"60min",@"90min",@"120min"];
     [view strokeChart];
     [self.view addSubview:view];
