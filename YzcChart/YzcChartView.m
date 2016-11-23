@@ -11,6 +11,7 @@
 
 @implementation YzcChartView{
     UIScrollView *myScrollView;
+    CGPoint lastPoint;//最后一个坐标点
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -133,6 +134,12 @@
         
         float grade = ((float)firstValue-minValue) / ((float)maxValue-minValue);
         
+        //遮罩层形状
+        UIBezierPath *bezier1 = [UIBezierPath bezierPath];
+        bezier1.lineCapStyle = kCGLineCapRound;
+        bezier1.lineJoinStyle = kCGLineJoinMiter;
+        [bezier1 moveToPoint:CGPointMake(xPosition, chartCavanHeight - grade * chartCavanHeight+UULabelHeight)];
+       
         //第一个点
         BOOL isShowMaxAndMinPoint = YES;
         if (self.isDrawPoint) {
@@ -158,6 +165,12 @@
                 [progressline addLineToPoint:point];
               
                 [progressline moveToPoint:point];
+                [bezier1 addLineToPoint:point];
+                
+                if (index == _yLabels.count-1) {
+                    lastPoint = point;
+                }
+
                 if (self.isDrawPoint) {
                     
                     [self addPoint:point
@@ -186,6 +199,8 @@
             [_chartLine addAnimation:pathAnimation forKey:@"strokeEndAnimation"];
             
             _chartLine.strokeEnd = 1.0;
+            
+            [self addGradientLayer:bezier1];
         }
     }
 }
@@ -214,6 +229,45 @@
     }
     
     [myScrollView addSubview:view];
+}
+
+
+/**
+ 添加渐变图层
+ */
+- (void)addGradientLayer:(UIBezierPath *)bezier1
+{
+    CAShapeLayer *shadeLayer = [CAShapeLayer layer];
+    shadeLayer.path = bezier1.CGPath;
+    shadeLayer.fillColor = [UIColor greenColor].CGColor;
+    
+    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+    gradientLayer.frame = CGRectMake(5, 0, 0, myScrollView.bounds.size.height-20);
+    gradientLayer.startPoint = CGPointMake(0, 0);
+    gradientLayer.endPoint = CGPointMake(0, 1);
+    gradientLayer.cornerRadius = 5;
+    gradientLayer.masksToBounds = YES;
+    gradientLayer.colors = @[(__bridge id)[UIColor colorWithRed:166/255.0 green:206/255.0 blue:247/255.0 alpha:0.5].CGColor,(__bridge id)[UIColor colorWithRed:237/255.0 green:246/255.0 blue:253/255.0 alpha:0.3].CGColor];
+//    gradientLayer.locations = @[@(0.5f),@(0.5),@(0.5)];
+    gradientLayer.locations = @[@(0.5f)];
+    
+    CALayer *baseLayer = [CALayer layer];
+    [baseLayer addSublayer:gradientLayer];
+    [baseLayer setMask:shadeLayer];
+    
+    [myScrollView.layer insertSublayer:baseLayer atIndex:0];
+    
+    CABasicAnimation *anmi1 = [CABasicAnimation animation];
+    anmi1.keyPath = @"bounds";
+    anmi1.duration = _yLabels.count*0.4;
+    anmi1.toValue = [NSValue valueWithCGRect:CGRectMake(5, 0, 2*lastPoint.x, myScrollView.bounds.size.height-20)];
+    anmi1.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    anmi1.fillMode = kCAFillModeForwards;
+    anmi1.autoreverses = NO;
+    anmi1.removedOnCompletion = NO;
+    
+    [gradientLayer addAnimation:anmi1 forKey:@"bounds"];
+
 }
 
 @end

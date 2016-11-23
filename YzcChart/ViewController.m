@@ -20,7 +20,7 @@
     
     YzcChartView *view = [[YzcChartView alloc] initWithFrame:CGRectMake(10, 100,  self.view.frame.size.width, 300)];
     view.isdrawLine = YES;
-    view.isDrawPoint = YES;
+    view.isDrawPoint = NO;
     view.lineColor = [UIColor redColor];
     view.pointColor = [UIColor blueColor];
     view.yLabels = @[@"60",@"120",@"140",@"180",@"60"];
