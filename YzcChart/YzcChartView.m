@@ -24,6 +24,8 @@
         myScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(UUYLabelwidth, 0, frame.size.width-UUYLabelwidth, frame.size.height)];
         myScrollView.bounces = NO;
         [self addSubview:myScrollView];
+        self.isDrawPoint = YES;
+        self.isdrawLine  = YES;
     }
     return self;
 }
@@ -46,21 +48,10 @@
     }
     _xLabelWidth = (myScrollView.frame.size.width - UUYLabelwidth * 0.5)/5;
     
-//    _xLabelWidth = myScrollView.frame.size.width/num;
-//    
-//    for (int i=0; i<xLabels.count; i++) {
-//        SCChartLabel * label = [[SCChartLabel alloc] initWithFrame:CGRectMake((i *  _xLabelWidth ), self.frame.size.height - UULabelHeight, _xLabelWidth, UULabelHeight)];
-//        label.text = xLabels[i];
-//        [myScrollView addSubview:label];
-//    }
-//    
-    
-    
     for (int i=0; i<xLabels.count; i++) {
         NSString *labelText = xLabels[i];
         YzcLabel * label = [[YzcLabel alloc] initWithFrame:CGRectMake(i * _xLabelWidth+UUYLabelwidth*0.5-10, self.frame.size.height - UULabelHeight, _xLabelWidth, UULabelHeight)];
         label.text = labelText;
-//        [self addSubview:label];
         [myScrollView addSubview:label];
         
         [_chartLabelsForX addObject:label];
@@ -92,47 +83,22 @@
 - (void)setYLabels:(NSArray *)yLabels
 {
     _yLabels = yLabels;
-//    NSInteger max = 0;
-//    NSInteger min = 1000000000;
+
+    CGFloat _yValueMax = [[self.yLabels valueForKeyPath:@"@max.floatValue"] floatValue];
+    CGFloat _yValueMin = [[self.yLabels valueForKeyPath:@"@min.floatValue"] floatValue];
+    float level = (_yValueMax-_yValueMin) /3;
+    CGFloat chartCavanHeight = self.frame.size.height - UULabelHeight*3;
+    CGFloat levelHeight = chartCavanHeight /3;
     
-//    for (NSArray * ary in yLabels) {
-//        for (NSString *valueString in yLabels) {
-//            NSInteger value = [valueString integerValue];
-//            if (value > max) {
-//                max = value;
-//            }
-//            if (value < min) {
-//                min = value;
-//            }
-//        }
-//    }
-//    max = max<5 ? 5:max;
-//    _yValueMin = 0;
-//    _yValueMax = (int)max;
-    
-//    if (_chooseRange.max != _chooseRange.min) {
-//        _yValueMax = _chooseRange.max;
-//        _yValueMin = _chooseRange.min;
-//    }
-//
-//    float level = (_yValueMax-_yValueMin) /4.0;
-    CGFloat chartCavanHeight = self.frame.size.height - UULabelHeight;
-    CGFloat levelHeight = chartCavanHeight /yLabels.count;
-    
-    for (int i=0; i<yLabels.count; i++) {
-        NSString *valueString = yLabels[i];
-        YzcLabel * label = [[YzcLabel alloc] initWithFrame:CGRectMake(0.0,chartCavanHeight - (i+1) * levelHeight + 5, UUYLabelwidth, UULabelHeight)];
-        label.text = valueString;
+    for (int i=0; i<4; i++) {
+        YzcLabel * label = [[YzcLabel alloc] initWithFrame:CGRectMake(0.0,chartCavanHeight - i * levelHeight + 5, UUYLabelwidth, UULabelHeight)];
+        label.text = [NSString stringWithFormat:@"%d%@",(int)(level * i+_yValueMin),self.unit ? self.unit : @""];
         [self addSubview:label];
     }
-//    if ([super respondsToSelector:@selector(setMarkRange:)]) {
-//        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(UUYLabelwidth, (1-(_markRange.max-_yValueMin)/(_yValueMax-_yValueMin))*chartCavanHeight+UULabelHeight, self.frame.size.width-UUYLabelwidth, (_markRange.max-_markRange.min)/(_yValueMax-_yValueMin)*chartCavanHeight)];
-//        view.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
-//        [self addSubview:view];
-//    }
+
     
     //画横线
-    for (int i=0; i<yLabels.count; i++) {
+    for (int i=0; i<4; i++) {
         
             CAShapeLayer *shapeLayer = [CAShapeLayer layer];
             UIBezierPath *path = [UIBezierPath bezierPath];
@@ -152,33 +118,12 @@
 - (void)strokeChart
 {
     
-    NSInteger maxValue = [[_yValues valueForKeyPath:@"@max.intValue"] integerValue];
-    NSInteger minValue = [[_yValues valueForKeyPath:@"@min.intValue"] integerValue];
+    NSInteger maxValue = [[_yLabels valueForKeyPath:@"@max.intValue"] integerValue];
+    NSInteger minValue = [[_yLabels valueForKeyPath:@"@min.intValue"] integerValue];
     
     
-    for (int i=0; i<_yValues.count; i++) {
-//        NSArray *childAry = _yValues[i];
-//        if (childAry.count==0) {
-//            return;
-//        }
-        //获取最大最小位置
-        CGFloat max = [_yValues[0] floatValue];
-        CGFloat min = [_yValues[0] floatValue];
-        NSInteger max_i = 0;
-        NSInteger min_i = 0;
-        
-        for (int j=0; j<_yValues.count; j++){
-            CGFloat num = [_yValues[j] floatValue];
-            if (max<=num){
-                max = num;
-                max_i = j;
-            }
-            if (min>=num){
-                min = num;
-                min_i = j;
-            }
-        }
-        
+    for (int i=0; i<_yLabels.count; i++) {
+
         //划线
         CAShapeLayer *_chartLine = [CAShapeLayer layer];
         _chartLine.lineCap = kCALineCapRound;
@@ -189,7 +134,7 @@
         [myScrollView.layer addSublayer:_chartLine];
         
         UIBezierPath *progressline = [UIBezierPath bezierPath];
-        CGFloat firstValue = [[_yValues objectAtIndex:0] floatValue];
+        CGFloat firstValue = [[_yLabels objectAtIndex:0] floatValue];
         CGFloat xPosition = UUYLabelwidth;
         CGFloat chartCavanHeight = self.frame.size.height - UULabelHeight*3;
         
@@ -197,17 +142,13 @@
         
         //第一个点
         BOOL isShowMaxAndMinPoint = YES;
-//        if (self.showMaxMinArray) {
-//            if ([self.showMaxMinArray[i] intValue]>0) {
-//                isShowMaxAndMinPoint = (max_i==0 || min_i==0)?NO:YES;
-//            }else{
-//                isShowMaxAndMinPoint = YES;
-//            }
-//        }
-        [self addPoint:CGPointMake(xPosition, chartCavanHeight - grade * chartCavanHeight+UULabelHeight)
-                 index:i
-                isShow:isShowMaxAndMinPoint
-                 value:firstValue];
+        if (self.isDrawPoint) {
+            
+            [self addPoint:CGPointMake(xPosition, chartCavanHeight - grade * chartCavanHeight+UULabelHeight)
+                     index:i
+                    isShow:isShowMaxAndMinPoint
+                     value:firstValue];
+        }
         
         
         [progressline moveToPoint:CGPointMake(xPosition, chartCavanHeight - grade * chartCavanHeight+UULabelHeight)];
@@ -215,57 +156,55 @@
         [progressline setLineCapStyle:kCGLineCapRound];
         [progressline setLineJoinStyle:kCGLineJoinRound];
         NSInteger index = 0;
-        for (NSString * valueString in _yValues) {
+        for (NSString * valueString in _yLabels) {
             
-//            float grade =([valueString floatValue]-_yValueMin) / ((float)_yValueMax-_yValueMin);
             float grade =([valueString floatValue] - minValue) / ((float)maxValue-minValue);
             if (index != 0) {
                 
                 CGPoint point = CGPointMake(xPosition+index*_xLabelWidth, chartCavanHeight - grade * chartCavanHeight+UULabelHeight);
                 [progressline addLineToPoint:point];
-                
-//                BOOL isShowMaxAndMinPoint = YES;
-//                if (self.showMaxMinArray) {
-//                    if ([self.showMaxMinArray[i] intValue]>0) {
-//                        isShowMaxAndMinPoint = (max_i==index || min_i==index)?NO:YES;
-//                    }else{
-//                        isShowMaxAndMinPoint = YES;
-//                    }
-//                }
+              
                 [progressline moveToPoint:point];
-                [self addPoint:point
-                         index:i
-                        isShow:isShowMaxAndMinPoint
-                         value:[valueString floatValue]];
+                if (self.isDrawPoint) {
+                    
+                    [self addPoint:point
+                             index:i
+                            isShow:isShowMaxAndMinPoint
+                             value:[valueString floatValue]];
+                }
             }
             index += 1;
         }
         
-        _chartLine.path = progressline.CGPath;
-        if ([[_colors objectAtIndex:i] CGColor]) {
-            _chartLine.strokeColor = [[_colors objectAtIndex:i] CGColor];
-        }else{
-            _chartLine.strokeColor = [UIColor greenColor].CGColor;
+        if (self.isdrawLine) {
+            
+            _chartLine.path = progressline.CGPath;
+            if ([[_colors objectAtIndex:i] CGColor]) {
+                _chartLine.strokeColor = [[_colors objectAtIndex:i] CGColor];
+            }else{
+                _chartLine.strokeColor = [UIColor greenColor].CGColor;
+            }
+            CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+            pathAnimation.duration = _yLabels.count*0.4;
+            pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+            pathAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
+            pathAnimation.toValue = [NSNumber numberWithFloat:1.0f];
+            pathAnimation.autoreverses = NO;
+            [_chartLine addAnimation:pathAnimation forKey:@"strokeEndAnimation"];
+            
+            _chartLine.strokeEnd = 1.0;
         }
-        CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-        pathAnimation.duration = _yValues.count*0.4;
-        pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-        pathAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
-        pathAnimation.toValue = [NSNumber numberWithFloat:1.0f];
-        pathAnimation.autoreverses = NO;
-        [_chartLine addAnimation:pathAnimation forKey:@"strokeEndAnimation"];
-        
-        _chartLine.strokeEnd = 1.0;
     }
 }
 
 
 - (void)addPoint:(CGPoint)point index:(NSInteger)index isShow:(BOOL)isHollow value:(CGFloat)value
 {
-    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(5, 5, 10, 10)];
+    CGFloat viewWH = 15;
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(5, 5, viewWH, viewWH)];
     view.center = point;
     view.layer.masksToBounds = YES;
-    view.layer.cornerRadius = 5;
+    view.layer.cornerRadius = viewWH*0.5;
     view.layer.borderWidth = 2;
     view.layer.borderColor = [[_colors objectAtIndex:index] CGColor]?[[_colors objectAtIndex:index] CGColor]:[UIColor greenColor].CGColor;
     

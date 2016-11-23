@@ -19,10 +19,13 @@
 
 @property (strong, nonatomic) NSArray * xLabels;
 @property (strong, nonatomic) NSArray * yLabels;
-@property (strong, nonatomic) NSArray * yValues;
 @property (strong, nonatomic) NSArray * colors;
 
 @property (nonatomic) CGFloat xLabelWidth;
+
+@property (nonatomic, assign) BOOL isdrawLine;
+@property (nonatomic, assign) BOOL isDrawPoint;
+@property (copy, nonatomic) NSString *unit;
 
 //@property (nonatomic) CGFloat yValueMin;
 //@property (nonatomic) CGFloat yValueMax;
