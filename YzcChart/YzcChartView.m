@@ -10,10 +10,7 @@
 #import "YzcLabel.h"
 
 @implementation YzcChartView{
-    NSHashTable *_chartLabelsForX;
-    
     UIScrollView *myScrollView;
-    
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -33,10 +30,7 @@
 
 - (void)setXLabels:(NSArray *)xLabels
 {
-    if( !_chartLabelsForX ){
-        _chartLabelsForX = [NSHashTable weakObjectsHashTable];
-    }
-    
+
     _xLabels = xLabels;
     CGFloat num = 0;
     if (xLabels.count>=20) {
@@ -54,7 +48,6 @@
         label.text = labelText;
         [myScrollView addSubview:label];
         
-        [_chartLabelsForX addObject:label];
     }
     
     //画竖线
@@ -182,7 +175,7 @@
             if ([[_colors objectAtIndex:i] CGColor]) {
                 _chartLine.strokeColor = [[_colors objectAtIndex:i] CGColor];
             }else{
-                _chartLine.strokeColor = [UIColor greenColor].CGColor;
+                _chartLine.strokeColor = self.lineColor ? self.lineColor.CGColor : [UIColor greenColor].CGColor;
             }
             CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
             pathAnimation.duration = _yLabels.count*0.4;
@@ -200,18 +193,18 @@
 
 - (void)addPoint:(CGPoint)point index:(NSInteger)index isShow:(BOOL)isHollow value:(CGFloat)value
 {
-    CGFloat viewWH = 15;
+    CGFloat viewWH = 13;
     UIView *view = [[UIView alloc]initWithFrame:CGRectMake(5, 5, viewWH, viewWH)];
     view.center = point;
     view.layer.masksToBounds = YES;
     view.layer.cornerRadius = viewWH*0.5;
     view.layer.borderWidth = 2;
-    view.layer.borderColor = [[_colors objectAtIndex:index] CGColor]?[[_colors objectAtIndex:index] CGColor]:[UIColor greenColor].CGColor;
+    view.layer.borderColor = [[_colors objectAtIndex:index] CGColor]?[[_colors objectAtIndex:index] CGColor]:self.pointColor ? self.pointColor.CGColor : [UIColor greenColor].CGColor;
     
     if (isHollow) {
         view.backgroundColor = [UIColor whiteColor];
     }else{
-        view.backgroundColor = [_colors objectAtIndex:index]?[_colors objectAtIndex:index]:[UIColor greenColor];
+        view.backgroundColor = [_colors objectAtIndex:index] ? [_colors objectAtIndex:index]:[UIColor greenColor];
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(point.x-UUTagLabelwidth/2.0, point.y-UULabelHeight*2, UUTagLabelwidth, UULabelHeight)];
         label.font = [UIFont systemFontOfSize:10];
         label.textAlignment = NSTextAlignmentCenter;
@@ -223,8 +216,4 @@
     [myScrollView addSubview:view];
 }
 
-- (NSArray *)chartLabelsForX
-{
-    return [_chartLabelsForX allObjects];
-}
 @end

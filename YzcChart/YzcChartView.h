@@ -27,10 +27,9 @@
 @property (nonatomic, assign) BOOL isDrawPoint;
 @property (copy, nonatomic) NSString *unit;
 
-//@property (nonatomic) CGFloat yValueMin;
-//@property (nonatomic) CGFloat yValueMax;
+@property (nonatomic, strong) UIColor *lineColor;
+@property (nonatomic, strong) UIColor *pointColor;
 
-- (NSArray *)chartLabelsForX;
 
 - (void)strokeChart;
 
