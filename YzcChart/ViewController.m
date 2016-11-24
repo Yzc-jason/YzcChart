@@ -24,7 +24,7 @@
     view.unit = @"bpm";
     view.lineColor = [UIColor redColor];
     view.pointColor = [UIColor blueColor];
-    view.yLabels = @[@"60",@"145",@"140",@"175",@"88"];
+    view.yLabels = @[@"60",@"70",@"140",@"80",@"120"];
     view.xLabels = @[@"0min",@"30min",@"60min",@"90min",@"120min"];
     [view strokeChart];
     [self.view addSubview:view];

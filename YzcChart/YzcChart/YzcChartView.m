@@ -12,6 +12,7 @@
 @implementation YzcChartView{
     UIScrollView *myScrollView;
     CGPoint lastPoint;//最后一个坐标点
+    CGPoint originPoint;//原点
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -112,97 +113,89 @@
 - (void)strokeChart
 {
     
+    BOOL isShowMaxAndMinPoint = YES;
     NSInteger maxValue = [[_yLabels valueForKeyPath:@"@max.intValue"] integerValue];
     NSInteger minValue = [[_yLabels valueForKeyPath:@"@min.intValue"] integerValue];
-    
-    
-    for (int i=0; i<_yLabels.count; i++) {
 
-        //划线
-        CAShapeLayer *_chartLine = [CAShapeLayer layer];
-        _chartLine.lineCap = kCALineCapRound;   //设置线条拐角帽的样式
-        _chartLine.lineJoin = kCALineJoinRound; //设置两条线连结点的样式
-        _chartLine.fillColor   = [[UIColor whiteColor] CGColor];
-        _chartLine.lineWidth   = 2.0;
-        _chartLine.strokeEnd   = 0.0;
-        [myScrollView.layer addSublayer:_chartLine];
+    //划线
+    CAShapeLayer *_chartLine = [CAShapeLayer layer];
+    _chartLine.lineCap = kCALineCapRound;   //设置线条拐角帽的样式
+    _chartLine.lineJoin = kCALineJoinRound; //设置两条线连结点的样式
+    _chartLine.fillColor   = [[UIColor whiteColor] CGColor];
+    _chartLine.lineWidth   = 2.0;
+    _chartLine.strokeEnd   = 0.0;
+    [myScrollView.layer addSublayer:_chartLine];
+    
+    //线
+    UIBezierPath *progressline = [UIBezierPath bezierPath];
+    CGFloat firstValue = [[_yLabels objectAtIndex:0] floatValue];
+    CGFloat xPosition = UUYLabelwidth;
+    CGFloat chartCavanHeight = self.frame.size.height - UULabelHeight*3;
+    
+    //第一个点
+    float grade = ((float)firstValue-minValue) / ((float)maxValue-minValue);
+    CGPoint firstPoint = CGPointMake(xPosition, chartCavanHeight - grade * chartCavanHeight+UULabelHeight);
+    [progressline moveToPoint:firstPoint];
+    [progressline setLineWidth:2.0];
+    [progressline setLineCapStyle:kCGLineCapRound];
+    [progressline setLineJoinStyle:kCGLineJoinRound];
+    
+    //遮罩层形状
+    UIBezierPath *bezier1 = [UIBezierPath bezierPath];
+    bezier1.lineCapStyle = kCGLineCapRound;
+    bezier1.lineJoinStyle = kCGLineJoinMiter;
+    [bezier1 moveToPoint:firstPoint];
+    originPoint = firstPoint;
+    
+    NSInteger index = 0;
+    for (NSString * valueString in _yLabels) {
         
-        UIBezierPath *progressline = [UIBezierPath bezierPath];
-        CGFloat firstValue = [[_yLabels objectAtIndex:0] floatValue];
-        CGFloat xPosition = UUYLabelwidth;
-        CGFloat chartCavanHeight = self.frame.size.height - UULabelHeight*3;
+        float grade =([valueString floatValue] - minValue) / ((float)maxValue-minValue);
         
-        float grade = ((float)firstValue-minValue) / ((float)maxValue-minValue);
+        CGPoint point = CGPointMake(xPosition+index*_xLabelWidth, chartCavanHeight - grade * chartCavanHeight+UULabelHeight);
+        [progressline addLineToPoint:point];
+        [progressline moveToPoint:point];
         
-        //遮罩层形状
-        UIBezierPath *bezier1 = [UIBezierPath bezierPath];
-        bezier1.lineCapStyle = kCGLineCapRound;
-        bezier1.lineJoinStyle = kCGLineJoinMiter;
-        [bezier1 moveToPoint:CGPointMake(xPosition, chartCavanHeight - grade * chartCavanHeight+UULabelHeight)];
-       
-        //第一个点
-        BOOL isShowMaxAndMinPoint = YES;
+        if (index == _yLabels.count-1) {
+            lastPoint = point;          //记录最后一个点
+        }
+        
+        if (index != 0) {
+            [bezier1 addLineToPoint:point];
+        }
+        
         if (self.isDrawPoint) {
             
-            [self addPoint:CGPointMake(xPosition, chartCavanHeight - grade * chartCavanHeight+UULabelHeight)
-                     index:i
+            [self addPoint:point
+                     index:index
                     isShow:isShowMaxAndMinPoint
-                     value:firstValue];
+                     value:[valueString floatValue]];
         }
-        
-        
-        [progressline moveToPoint:CGPointMake(xPosition, chartCavanHeight - grade * chartCavanHeight+UULabelHeight)];
-        [progressline setLineWidth:2.0];
-        [progressline setLineCapStyle:kCGLineCapRound];
-        [progressline setLineJoinStyle:kCGLineJoinRound];
-        NSInteger index = 0;
-        for (NSString * valueString in _yLabels) {
-            
-            float grade =([valueString floatValue] - minValue) / ((float)maxValue-minValue);
-            if (index != 0) {
-                
-                CGPoint point = CGPointMake(xPosition+index*_xLabelWidth, chartCavanHeight - grade * chartCavanHeight+UULabelHeight);
-                [progressline addLineToPoint:point];
-              
-                [progressline moveToPoint:point];
-                [bezier1 addLineToPoint:point];
-                
-                if (index == _yLabels.count-1) {
-                    lastPoint = point;
-                }
-
-                if (self.isDrawPoint) {
-                    
-                    [self addPoint:point
-                             index:i
-                            isShow:isShowMaxAndMinPoint
-                             value:[valueString floatValue]];
-                }
-            }
-            index += 1;
-        }
-        
-        if (self.isdrawLine) {
-            
-            _chartLine.path = progressline.CGPath;
-            if ([[_colors objectAtIndex:i] CGColor]) {
-                _chartLine.strokeColor = [[_colors objectAtIndex:i] CGColor];
-            }else{
-                _chartLine.strokeColor = self.lineColor ? self.lineColor.CGColor : [UIColor greenColor].CGColor;
-            }
-            CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-            pathAnimation.duration = _yLabels.count*0.4;
-            pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-            pathAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
-            pathAnimation.toValue = [NSNumber numberWithFloat:1.0f];
-            pathAnimation.autoreverses = NO;
-            [_chartLine addAnimation:pathAnimation forKey:@"strokeEndAnimation"];
-            
-            _chartLine.strokeEnd = 1.0;
-            
-            [self addGradientLayer:bezier1];
-        }
+        index += 1;
     }
+    
+    if (self.isdrawLine) {
+        
+        _chartLine.path = progressline.CGPath;
+        _chartLine.strokeColor = self.lineColor ? self.lineColor.CGColor : [UIColor greenColor].CGColor;
+        
+        CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+        pathAnimation.duration = _yLabels.count*0.4;
+        pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        pathAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
+        pathAnimation.toValue = [NSNumber numberWithFloat:1.0f];
+        pathAnimation.autoreverses = NO;
+        [_chartLine addAnimation:pathAnimation forKey:@"strokeEndAnimation"];
+        
+        _chartLine.strokeEnd = 1.0;
+        
+        [bezier1 addLineToPoint:CGPointMake(lastPoint.x, self.frame.size.height - UULabelHeight*2)];
+        [bezier1 addLineToPoint:CGPointMake(originPoint.x, self.frame.size.height - UULabelHeight*2)];
+        [bezier1 addLineToPoint:originPoint];
+        
+        [self addGradientLayer:bezier1];
+    }
+
 }
 
 
@@ -245,13 +238,12 @@
     gradientLayer.frame = CGRectMake(5, 0, 0, myScrollView.bounds.size.height-20);
     gradientLayer.cornerRadius = 5;
     gradientLayer.masksToBounds = YES;
-    gradientLayer.colors = @[(__bridge id)[UIColor redColor].CGColor,(__bridge id)[UIColor blueColor].CGColor,(__bridge id)[UIColor whiteColor].CGColor];
-    /**
-     @[(__bridge id)[UIColor colorWithRed:166/255.0 green:206/255.0 blue:247/255.0 alpha:0.5].CGColor,(__bridge id)[UIColor colorWithRed:237/255.0 green:246/255.0 blue:253/255.0 alpha:0.3].CGColor];
-     */
-    gradientLayer.locations = @[@(0.2f),@(0.8)];
+    gradientLayer.colors = @[(__bridge id)[UIColor colorWithRed:166/255.0 green:206/255.0 blue:247/255.0 alpha:0.5].CGColor,(__bridge id)[UIColor colorWithRed:166/255.0 green:206/255.0 blue:247/255.0 alpha:0.0].CGColor];
+ 
+//    gradientLayer.locations = @[@(0.2f),@(0.8)];
+    gradientLayer.locations = @[@(0.5f)];
     gradientLayer.startPoint = CGPointMake(0, 0);
-    gradientLayer.endPoint = CGPointMake(0, 0.5);
+    gradientLayer.endPoint = CGPointMake(1, 1);
     
     
     CALayer *baseLayer = [CALayer layer];
