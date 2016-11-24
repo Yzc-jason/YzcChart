@@ -12,7 +12,7 @@
 #define xLabelMargin        15
 #define yLabelMargin        15
 #define UULabelHeight       20
-#define UUYLabelwidth       40
+#define UUYLabelwidth       30
 #define UUTagLabelwidth     80
 
 @interface YzcChartView : UIView
