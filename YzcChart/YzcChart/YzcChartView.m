@@ -42,9 +42,11 @@
     }else{
         num = xLabels.count;
     }
-    _xLabelWidth = (myScrollView.frame.size.width - UUYLabelwidth * 0.5)/5;
+    _xLabelWidth = (myScrollView.frame.size.width - UUYLabelwidth * 0.5)/10;
     
+    NSInteger count = xLabels.count > 10 ? xLabels.count : 10;
     for (int i=0; i<xLabels.count; i++) {
+       
         NSString *labelText = xLabels[i];
         YzcLabel * label = [[YzcLabel alloc] initWithFrame:CGRectMake(i * _xLabelWidth+UUYLabelwidth*0.5-10, self.frame.size.height - UULabelHeight, _xLabelWidth, UULabelHeight)];
         label.text = labelText;
@@ -53,11 +55,11 @@
     }
     
     //画竖线
-    for (int i=0; i<xLabels.count; i++) {
+    for (int i=0; i<count; i++) {
         CAShapeLayer *shapeLayer = [CAShapeLayer layer];
         UIBezierPath *path = [UIBezierPath bezierPath];
         [path moveToPoint:CGPointMake(UUYLabelwidth+i*_xLabelWidth,0)];
-        [path addLineToPoint:CGPointMake(UUYLabelwidth+i*_xLabelWidth,self.frame.size.height-UULabelHeight)];
+        [path addLineToPoint:CGPointMake(UUYLabelwidth+i*_xLabelWidth,self.frame.size.height-UULabelHeight-10)];
         [path closePath];
         shapeLayer.path = path.CGPath;
         shapeLayer.strokeColor = [[[UIColor blackColor] colorWithAlphaComponent:0.1] CGColor];
@@ -86,7 +88,7 @@
     CGFloat levelHeight = chartCavanHeight /3;
     
     for (int i=0; i<4; i++) {
-        YzcLabel * label = [[YzcLabel alloc] initWithFrame:CGRectMake(0,chartCavanHeight - i * levelHeight, UUYLabelwidth, UULabelHeight)];
+        YzcLabel * label = [[YzcLabel alloc] initWithFrame:CGRectMake(0,chartCavanHeight - i * levelHeight, UUYLabelwidth+20, UULabelHeight)];
         label.text = [NSString stringWithFormat:@"%d%@",(int)(level * i+_yValueMin),self.unit ? self.unit : @""];
         [self addSubview:label];
     }
@@ -238,10 +240,9 @@
     gradientLayer.frame = CGRectMake(5, 0, 0, myScrollView.bounds.size.height-20);
     gradientLayer.cornerRadius = 5;
     gradientLayer.masksToBounds = YES;
-    gradientLayer.colors = @[(__bridge id)[UIColor colorWithRed:166/255.0 green:206/255.0 blue:247/255.0 alpha:0.5].CGColor,(__bridge id)[UIColor colorWithRed:166/255.0 green:206/255.0 blue:247/255.0 alpha:0.0].CGColor];
- 
-//    gradientLayer.locations = @[@(0.2f),@(0.8)];
-    gradientLayer.locations = @[@(0.5f)];
+    gradientLayer.colors = @[(__bridge id)[[UIColor redColor] colorWithAlphaComponent:0.4].CGColor,(__bridge id)[[UIColor redColor] colorWithAlphaComponent:0.0].CGColor];
+    gradientLayer.locations = @[@(0.1f),@(1.0f)];
+//    gradientLayer.locations = @[@(0.5f)];
     gradientLayer.startPoint = CGPointMake(0, 0);
     gradientLayer.endPoint = CGPointMake(1, 1);
     

@@ -18,9 +18,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    YzcChartView *view = [[YzcChartView alloc] initWithFrame:CGRectMake(10, 100,  self.view.frame.size.width, 300)];
+    YzcChartView *view = [[YzcChartView alloc] initWithFrame:CGRectMake(10, 100,  self.view.frame.size.width, 200)];
     view.isdrawLine = YES;
-    view.isDrawPoint = YES;
+    view.isDrawPoint = NO;
     view.unit = @"bpm";
     view.lineColor = [UIColor redColor];
     view.pointColor = [UIColor blueColor];
