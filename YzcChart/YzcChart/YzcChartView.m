@@ -13,6 +13,7 @@
     UIScrollView *myScrollView;
     CGPoint lastPoint;//最后一个坐标点
     CGPoint originPoint;//原点
+    CGPoint prePoint;   //上一个点
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -123,7 +124,7 @@
     CAShapeLayer *_chartLine = [CAShapeLayer layer];
     _chartLine.lineCap = kCALineCapRound;   //设置线条拐角帽的样式
     _chartLine.lineJoin = kCALineJoinRound; //设置两条线连结点的样式
-    _chartLine.fillColor   = [[UIColor whiteColor] CGColor];
+    _chartLine.fillColor   = [[UIColor clearColor] CGColor];
     _chartLine.lineWidth   = 2.0;
     _chartLine.strokeEnd   = 0.0;
     [myScrollView.layer addSublayer:_chartLine];
@@ -155,15 +156,21 @@
         float grade =([valueString floatValue] - minValue) / ((float)maxValue-minValue);
         
         CGPoint point = CGPointMake(xPosition+index*_xLabelWidth, chartCavanHeight - grade * chartCavanHeight+UULabelHeight);
-        [progressline addLineToPoint:point];
-        [progressline moveToPoint:point];
+        
+        if (index != 0) {
+            
+//            [progressline addLineToPoint:point];
+            [progressline addCurveToPoint:point controlPoint1:CGPointMake((point.x+prePoint.x)/2, prePoint.y) controlPoint2:CGPointMake((point.x+prePoint.x)/2, point.y)];
+             [progressline moveToPoint:point];
+            
+           
+            [bezier1 addCurveToPoint:point controlPoint1:CGPointMake((point.x+prePoint.x)/2, prePoint.y) controlPoint2:CGPointMake((point.x+prePoint.x)/2, point.y)];
+            //        [bezier1 addLineToPoint:point];
+        }
+        
         
         if (index == _yLabels.count-1) {
             lastPoint = point;          //记录最后一个点
-        }
-        
-        if (index != 0) {
-            [bezier1 addLineToPoint:point];
         }
         
         if (self.isDrawPoint) {
@@ -174,6 +181,7 @@
                      value:[valueString floatValue]];
         }
         index += 1;
+        prePoint = point;
     }
     
     if (self.isdrawLine) {
