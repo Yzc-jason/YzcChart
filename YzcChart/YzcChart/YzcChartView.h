@@ -24,6 +24,8 @@
 
 @property (nonatomic, assign) BOOL isdrawLine;
 @property (nonatomic, assign) BOOL isDrawPoint;
+/**是否显示渐变*/
+@property (nonatomic, assign) BOOL isShadow;
 
 /**y轴显示的单位*/
 @property (copy, nonatomic) NSString *unit;

@@ -35,6 +35,7 @@
         [self addSubview:self.myScrollView];
         self.isDrawPoint = YES;
         self.isdrawLine  = YES;
+        self.isShadow    = YES;
     }
     return self;
 }
@@ -203,12 +204,15 @@
         
         _chartLine.strokeEnd = 1.0;
         
-        [bezier1 addLineToPoint:CGPointMake(self.lastPoint.x, self.frame.size.height - UULabelHeight*2)];
-        [bezier1 addLineToPoint:CGPointMake(self.originPoint.x, self.frame.size.height - UULabelHeight*2)];
-        [bezier1 addLineToPoint:self.originPoint];
-        
-        [self addGradientLayer:bezier1];
-    }
+        if (self.isShadow) {
+            
+            [bezier1 addLineToPoint:CGPointMake(self.lastPoint.x, self.frame.size.height - UULabelHeight*2)];
+            [bezier1 addLineToPoint:CGPointMake(self.originPoint.x, self.frame.size.height - UULabelHeight*2)];
+            [bezier1 addLineToPoint:self.originPoint];
+            
+            [self addGradientLayer:bezier1];
+        }
+        }
 
 }
 
