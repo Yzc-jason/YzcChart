@@ -9,21 +9,30 @@
 #import "YzcChartView.h"
 #import "YzcLabel.h"
 
-@implementation YzcChartView{
-    UIScrollView *myScrollView;
-    CGPoint lastPoint;//最后一个坐标点
-    CGPoint originPoint;//原点
-    CGPoint prePoint;   //上一个点
-}
+@interface YzcChartView()
+
+@property (nonatomic) CGFloat xLabelWidth;
+
+@property (nonatomic, strong) UIScrollView *myScrollView;
+
+@property (nonatomic, assign) CGPoint lastPoint;;
+
+@property (nonatomic, assign) CGPoint originPoint;
+
+@property (nonatomic, assign) CGPoint prePoint;
+
+@end
+
+@implementation YzcChartView
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         
-        myScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(UUYLabelwidth, 0, frame.size.width-UUYLabelwidth, frame.size.height)];
-        myScrollView.bounces = NO;
-        [self addSubview:myScrollView];
+        self.myScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(UUYLabelwidth, 0, frame.size.width-UUYLabelwidth, frame.size.height)];
+        self.myScrollView.bounces = NO;
+        [self addSubview:self.myScrollView];
         self.isDrawPoint = YES;
         self.isdrawLine  = YES;
     }
@@ -43,7 +52,7 @@
     }else{
         num = xLabels.count;
     }
-    _xLabelWidth = (myScrollView.frame.size.width - UUYLabelwidth * 0.5)/10;
+    _xLabelWidth = (self.myScrollView.frame.size.width - UUYLabelwidth * 0.5)/10;
     
     NSInteger count = xLabels.count > 10 ? xLabels.count : 10;
     for (int i=0; i<xLabels.count; i++) {
@@ -51,7 +60,7 @@
         NSString *labelText = xLabels[i];
         YzcLabel * label = [[YzcLabel alloc] initWithFrame:CGRectMake(i * _xLabelWidth+UUYLabelwidth*0.5-10, self.frame.size.height - UULabelHeight, _xLabelWidth, UULabelHeight)];
         label.text = labelText;
-        [myScrollView addSubview:label];
+        [self.myScrollView addSubview:label];
         
     }
     
@@ -63,16 +72,16 @@
         [path addLineToPoint:CGPointMake(UUYLabelwidth+i*_xLabelWidth,self.frame.size.height-UULabelHeight-10)];
         [path closePath];
         shapeLayer.path = path.CGPath;
-        shapeLayer.strokeColor = [[[UIColor blackColor] colorWithAlphaComponent:0.1] CGColor];
+        shapeLayer.strokeColor =  self.yLineColor ? self.yLineColor.CGColor : [[[UIColor blackColor] colorWithAlphaComponent:0.1] CGColor];
         shapeLayer.fillColor = [[UIColor whiteColor] CGColor];
         shapeLayer.lineWidth = 1;
-        [myScrollView.layer addSublayer:shapeLayer];
+        [self.myScrollView.layer addSublayer:shapeLayer];
     }
     
     float max = (([xLabels count]-1)*_xLabelWidth + chartMargin)+_xLabelWidth;
     float yMax = (([self.yLabels count]-1)*UULabelHeight + yLabelMargin)+UULabelHeight;
-    if (myScrollView.frame.size.width < max-10) {
-        myScrollView.contentSize = CGSizeMake(max, yMax);
+    if (self.myScrollView.frame.size.width < max-10) {
+        self.myScrollView.contentSize = CGSizeMake(max, yMax);
     }
 
 }
@@ -97,18 +106,16 @@
     
     //画横线
     for (int i=0; i<4; i++) {
-        
-            CAShapeLayer *shapeLayer = [CAShapeLayer layer];
-            UIBezierPath *path = [UIBezierPath bezierPath];
-            [path moveToPoint:CGPointMake(20,UULabelHeight+i*levelHeight)];
-            [path addLineToPoint:CGPointMake(self.frame.size.width,UULabelHeight+i*levelHeight)];
-            [path closePath];
-            shapeLayer.path = path.CGPath;
-            shapeLayer.strokeColor = [[[UIColor blackColor] colorWithAlphaComponent:0.1] CGColor];
-            shapeLayer.fillColor = [[UIColor whiteColor] CGColor];
-            shapeLayer.lineWidth = 1;
-            [self.layer insertSublayer:shapeLayer atIndex:0];
-
+        CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+        UIBezierPath *path = [UIBezierPath bezierPath];
+        [path moveToPoint:CGPointMake(20,UULabelHeight+i*levelHeight)];
+        [path addLineToPoint:CGPointMake(self.frame.size.width,UULabelHeight+i*levelHeight)];
+        [path closePath];
+        shapeLayer.path = path.CGPath;
+        shapeLayer.strokeColor = self.xlineColor ? self.xlineColor.CGColor :[[[UIColor blackColor] colorWithAlphaComponent:0.1] CGColor];
+        shapeLayer.fillColor = [[UIColor whiteColor] CGColor];
+        shapeLayer.lineWidth = 1;
+        [self.layer insertSublayer:shapeLayer atIndex:0];
     }
 }
 
@@ -127,7 +134,7 @@
     _chartLine.fillColor   = [[UIColor clearColor] CGColor];
     _chartLine.lineWidth   = 2.0;
     _chartLine.strokeEnd   = 0.0;
-    [myScrollView.layer addSublayer:_chartLine];
+    [self.myScrollView.layer addSublayer:_chartLine];
     
     //线
     UIBezierPath *progressline = [UIBezierPath bezierPath];
@@ -148,7 +155,7 @@
     bezier1.lineCapStyle = kCGLineCapRound;
     bezier1.lineJoinStyle = kCGLineJoinMiter;
     [bezier1 moveToPoint:firstPoint];
-    originPoint = firstPoint;
+    self.originPoint = firstPoint;       //记录原点
     
     NSInteger index = 0;
     for (NSString * valueString in _yLabels) {
@@ -159,18 +166,15 @@
         
         if (index != 0) {
             
-//            [progressline addLineToPoint:point];
-            [progressline addCurveToPoint:point controlPoint1:CGPointMake((point.x+prePoint.x)/2, prePoint.y) controlPoint2:CGPointMake((point.x+prePoint.x)/2, point.y)];
+            [progressline addCurveToPoint:point controlPoint1:CGPointMake((point.x+self.prePoint.x)/2, self.prePoint.y) controlPoint2:CGPointMake((point.x+self.prePoint.x)/2, point.y)];
              [progressline moveToPoint:point];
             
            
-            [bezier1 addCurveToPoint:point controlPoint1:CGPointMake((point.x+prePoint.x)/2, prePoint.y) controlPoint2:CGPointMake((point.x+prePoint.x)/2, point.y)];
-            //        [bezier1 addLineToPoint:point];
+            [bezier1 addCurveToPoint:point controlPoint1:CGPointMake((point.x+self.prePoint.x)/2, self.prePoint.y) controlPoint2:CGPointMake((point.x+self.prePoint.x)/2, point.y)];
         }
         
-        
         if (index == _yLabels.count-1) {
-            lastPoint = point;          //记录最后一个点
+            self.lastPoint = point;          //记录最后一个点
         }
         
         if (self.isDrawPoint) {
@@ -181,7 +185,7 @@
                      value:[valueString floatValue]];
         }
         index += 1;
-        prePoint = point;
+        self.prePoint = point;
     }
     
     if (self.isdrawLine) {
@@ -199,9 +203,9 @@
         
         _chartLine.strokeEnd = 1.0;
         
-        [bezier1 addLineToPoint:CGPointMake(lastPoint.x, self.frame.size.height - UULabelHeight*2)];
-        [bezier1 addLineToPoint:CGPointMake(originPoint.x, self.frame.size.height - UULabelHeight*2)];
-        [bezier1 addLineToPoint:originPoint];
+        [bezier1 addLineToPoint:CGPointMake(self.lastPoint.x, self.frame.size.height - UULabelHeight*2)];
+        [bezier1 addLineToPoint:CGPointMake(self.originPoint.x, self.frame.size.height - UULabelHeight*2)];
+        [bezier1 addLineToPoint:self.originPoint];
         
         [self addGradientLayer:bezier1];
     }
@@ -211,27 +215,15 @@
 
 - (void)addPoint:(CGPoint)point index:(NSInteger)index isShow:(BOOL)isHollow value:(CGFloat)value
 {
-    CGFloat viewWH = 13;
+    CGFloat viewWH = 10;
     UIView *view = [[UIView alloc]initWithFrame:CGRectMake(5, 5, viewWH, viewWH)];
     view.center = point;
     view.layer.masksToBounds = YES;
     view.layer.cornerRadius = viewWH*0.5;
     view.layer.borderWidth = 2;
-    view.layer.borderColor = [[_colors objectAtIndex:index] CGColor]?[[_colors objectAtIndex:index] CGColor]:self.pointColor ? self.pointColor.CGColor : [UIColor greenColor].CGColor;
-    
-    if (isHollow) {
-        view.backgroundColor = [UIColor whiteColor];
-    }else{
-        view.backgroundColor = [_colors objectAtIndex:index] ? [_colors objectAtIndex:index]:[UIColor greenColor];
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(point.x-UUTagLabelwidth/2.0, point.y-UULabelHeight*2, UUTagLabelwidth, UULabelHeight)];
-        label.font = [UIFont systemFontOfSize:10];
-        label.textAlignment = NSTextAlignmentCenter;
-        label.textColor = view.backgroundColor;
-        label.text = [NSString stringWithFormat:@"%d",(int)value];
-        [self addSubview:label];
-    }
-    
-    [myScrollView addSubview:view];
+    view.layer.borderColor = self.pointColor ? self.pointColor.CGColor : [UIColor greenColor].CGColor;
+    view.backgroundColor = self.pointColor;
+    [self.myScrollView addSubview:view];
 }
 
 
@@ -245,26 +237,23 @@
     shadeLayer.fillColor = [UIColor greenColor].CGColor;
     
     CAGradientLayer *gradientLayer = [CAGradientLayer layer];
-    gradientLayer.frame = CGRectMake(5, 0, 0, myScrollView.bounds.size.height-20);
+    gradientLayer.frame = CGRectMake(5, 0, 0, self.myScrollView.bounds.size.height-20);
     gradientLayer.cornerRadius = 5;
     gradientLayer.masksToBounds = YES;
-    gradientLayer.colors = @[(__bridge id)[[UIColor redColor] colorWithAlphaComponent:0.4].CGColor,(__bridge id)[[UIColor redColor] colorWithAlphaComponent:0.0].CGColor];
+    gradientLayer.colors = @[(__bridge id)[self.lineColor colorWithAlphaComponent:0.4].CGColor,(__bridge id)[self.lineColor colorWithAlphaComponent:0.0].CGColor];
     gradientLayer.locations = @[@(0.1f),@(1.0f)];
-//    gradientLayer.locations = @[@(0.5f)];
     gradientLayer.startPoint = CGPointMake(0, 0);
     gradientLayer.endPoint = CGPointMake(1, 1);
-    
     
     CALayer *baseLayer = [CALayer layer];
     [baseLayer addSublayer:gradientLayer];
     [baseLayer setMask:shadeLayer];
-    
-    [myScrollView.layer insertSublayer:baseLayer atIndex:0];
+    [self.myScrollView.layer insertSublayer:baseLayer atIndex:0];
     
     CABasicAnimation *anmi1 = [CABasicAnimation animation];
     anmi1.keyPath = @"bounds";
     anmi1.duration = _yLabels.count*0.4;
-    anmi1.toValue = [NSValue valueWithCGRect:CGRectMake(5, 0, 2*lastPoint.x, myScrollView.bounds.size.height-20)];
+    anmi1.toValue = [NSValue valueWithCGRect:CGRectMake(5, 0, 2*self.lastPoint.x, self.myScrollView.bounds.size.height-20)];
     anmi1.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     anmi1.fillMode = kCAFillModeForwards;
     anmi1.autoreverses = NO;

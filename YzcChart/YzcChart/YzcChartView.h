@@ -17,18 +17,24 @@
 
 @interface YzcChartView : UIView
 
+/**X轴显示数组*/
 @property (strong, nonatomic) NSArray * xLabels;
+/**y轴数组*/
 @property (strong, nonatomic) NSArray * yLabels;
-@property (strong, nonatomic) NSArray * colors;
-
-@property (nonatomic) CGFloat xLabelWidth;
 
 @property (nonatomic, assign) BOOL isdrawLine;
 @property (nonatomic, assign) BOOL isDrawPoint;
-@property (copy, nonatomic) NSString *unit;
 
+/**y轴显示的单位*/
+@property (copy, nonatomic) NSString *unit;
+/**折线的颜色*/
 @property (nonatomic, strong) UIColor *lineColor;
+/**点的颜色*/
 @property (nonatomic, strong) UIColor *pointColor;
+/**横线的颜色*/
+@property (nonatomic, strong) UIColor *xlineColor;
+/**竖线的颜色*/
+@property (nonatomic, strong) UIColor *yLineColor;
 
 
 - (void)strokeChart;

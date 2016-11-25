@@ -20,10 +20,10 @@
     
     YzcChartView *view = [[YzcChartView alloc] initWithFrame:CGRectMake(10, 100,  self.view.frame.size.width, 200)];
     view.isdrawLine = YES;
-    view.isDrawPoint = NO;
+    view.isDrawPoint = YES;
     view.unit = @"bpm";
     view.lineColor = [UIColor redColor];
-    view.pointColor = [UIColor blueColor];
+    view.pointColor = [UIColor orangeColor];
     view.yLabels = @[@"60",@"70",@"140",@"80",@"120"];
     view.xLabels = @[@"0min",@"30min",@"60min",@"90min",@"120min"];
     [view strokeChart];
