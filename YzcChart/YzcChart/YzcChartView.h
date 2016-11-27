@@ -7,13 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YzcConst.h"
 
-#define chartMargin         10
-#define xLabelMargin        15
-#define yLabelMargin        15
-#define UULabelHeight       20
-#define UUYLabelwidth       30
-#define UUTagLabelwidth     80
+typedef NS_ENUM(NSInteger,YzcLineStyle){
+    YzcLineGrid,  //有网格
+    YzcLineNone  //没有网格和阴影
+};
 
 @interface YzcChartView : UIView
 
@@ -37,6 +36,8 @@
 @property (nonatomic, strong) UIColor *xlineColor;
 /**竖线的颜色*/
 @property (nonatomic, strong) UIColor *yLineColor;
+
+@property (nonatomic, assign) YzcLineStyle style;
 
 
 - (void)strokeChart;

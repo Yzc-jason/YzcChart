@@ -17,6 +17,9 @@
 		045383051DD411A400BAF33D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 045383031DD411A400BAF33D /* LaunchScreen.storyboard */; };
 		045383101DD411A400BAF33D /* YzcChartTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0453830F1DD411A400BAF33D /* YzcChartTests.m */; };
 		0453831B1DD411A400BAF33D /* YzcChartUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0453831A1DD411A400BAF33D /* YzcChartUITests.m */; };
+		D71181C71DE9BE46006BF97E /* YzcBarChart.m in Sources */ = {isa = PBXBuildFile; fileRef = D71181C61DE9BE46006BF97E /* YzcBarChart.m */; };
+		D71181CA1DE9C4A8006BF97E /* YzcBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D71181C91DE9C4A8006BF97E /* YzcBar.m */; };
+		D7AF2BA01DEA745A004E1292 /* YzcConst.m in Sources */ = {isa = PBXBuildFile; fileRef = D7AF2B9F1DEA745A004E1292 /* YzcConst.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +60,12 @@
 		045383161DD411A400BAF33D /* YzcChartUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YzcChartUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0453831A1DD411A400BAF33D /* YzcChartUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YzcChartUITests.m; sourceTree = "<group>"; };
 		0453831C1DD411A400BAF33D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D71181C51DE9BE46006BF97E /* YzcBarChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YzcBarChart.h; sourceTree = "<group>"; };
+		D71181C61DE9BE46006BF97E /* YzcBarChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YzcBarChart.m; sourceTree = "<group>"; };
+		D71181C81DE9C4A8006BF97E /* YzcBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YzcBar.h; sourceTree = "<group>"; };
+		D71181C91DE9C4A8006BF97E /* YzcBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YzcBar.m; sourceTree = "<group>"; };
+		D7AF2B9E1DEA745A004E1292 /* YzcConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YzcConst.h; sourceTree = "<group>"; };
+		D7AF2B9F1DEA745A004E1292 /* YzcConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YzcConst.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +100,12 @@
 				044975861DE6766F005F1E0C /* YzcChartView.m */,
 				044975871DE6766F005F1E0C /* YzcLabel.h */,
 				044975881DE6766F005F1E0C /* YzcLabel.m */,
+				D71181C51DE9BE46006BF97E /* YzcBarChart.h */,
+				D71181C61DE9BE46006BF97E /* YzcBarChart.m */,
+				D71181C81DE9C4A8006BF97E /* YzcBar.h */,
+				D71181C91DE9C4A8006BF97E /* YzcBar.m */,
+				D7AF2B9E1DEA745A004E1292 /* YzcConst.h */,
+				D7AF2B9F1DEA745A004E1292 /* YzcConst.m */,
 			);
 			path = YzcChart;
 			sourceTree = "<group>";
@@ -296,9 +311,12 @@
 			files = (
 				044975891DE6766F005F1E0C /* YzcChartView.m in Sources */,
 				045382FD1DD411A400BAF33D /* ViewController.m in Sources */,
+				D7AF2BA01DEA745A004E1292 /* YzcConst.m in Sources */,
 				045382FA1DD411A400BAF33D /* AppDelegate.m in Sources */,
 				0449758A1DE6766F005F1E0C /* YzcLabel.m in Sources */,
 				045382F71DD411A400BAF33D /* main.m in Sources */,
+				D71181CA1DE9C4A8006BF97E /* YzcBar.m in Sources */,
+				D71181C71DE9BE46006BF97E /* YzcBarChart.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

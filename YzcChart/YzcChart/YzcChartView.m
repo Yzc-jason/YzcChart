@@ -36,6 +36,7 @@
         self.isDrawPoint = YES;
         self.isdrawLine  = YES;
         self.isShadow    = YES;
+        self.style       = YzcLineGrid;
     }
     return self;
 }
@@ -53,36 +54,60 @@
     }else{
         num = xLabels.count;
     }
-    _xLabelWidth = (self.myScrollView.frame.size.width - UUYLabelwidth * 0.5)/10;
+    _xLabelWidth = (self.myScrollView.frame.size.width - UUYLabelwidth * 0.5)/(self.style ? 23 : 10);
     
     NSInteger count = xLabels.count > 10 ? xLabels.count : 10;
-    for (int i=0; i<xLabels.count; i++) {
-       
-        NSString *labelText = xLabels[i];
-        YzcLabel * label = [[YzcLabel alloc] initWithFrame:CGRectMake(i * _xLabelWidth+UUYLabelwidth*0.5-10, self.frame.size.height - UULabelHeight, _xLabelWidth, UULabelHeight)];
-        label.text = labelText;
-        [self.myScrollView addSubview:label];
+    count = self.style ? 24 : count;
+    for (int i=0; i<count; i++) {
+        
+        if (self.style == YzcLineGrid) {
+            
+            if (i%2 == 0) {
+                
+                NSString *labelText = xLabels[i];
+                YzcLabel * label = [[YzcLabel alloc] initWithFrame:CGRectMake(i * _xLabelWidth+UUYLabelwidth*0.5-10, self.frame.size.height - UULabelHeight, _xLabelWidth, UULabelHeight)];
+                label.text = labelText;
+                [self.myScrollView addSubview:label];
+            }
+        }else{
+            if (i%6 == 0) {
+                YzcLabel * label = [[YzcLabel alloc] initWithFrame:CGRectMake(i * _xLabelWidth+UUYLabelwidth*0.5, self.frame.size.height - UULabelHeight, _xLabelWidth*2, UULabelHeight)];
+                label.text = [NSString stringWithFormat:@"%02d:00",i];
+                [self.myScrollView addSubview:label];
+            }
+        }
+        
         
     }
     
-    //画竖线
-    for (int i=0; i<count; i++) {
-        CAShapeLayer *shapeLayer = [CAShapeLayer layer];
-        UIBezierPath *path = [UIBezierPath bezierPath];
-        [path moveToPoint:CGPointMake(UUYLabelwidth+i*_xLabelWidth,0)];
-        [path addLineToPoint:CGPointMake(UUYLabelwidth+i*_xLabelWidth,self.frame.size.height-UULabelHeight-10)];
-        [path closePath];
-        shapeLayer.path = path.CGPath;
-        shapeLayer.strokeColor =  self.yLineColor ? self.yLineColor.CGColor : [[[UIColor blackColor] colorWithAlphaComponent:0.1] CGColor];
-        shapeLayer.fillColor = [[UIColor whiteColor] CGColor];
-        shapeLayer.lineWidth = 1;
-        [self.myScrollView.layer addSublayer:shapeLayer];
+    if (self.style == YzcLineNone) {
+        //画底部的点
+        for (int i=0; i<24; i++) {
+            
+//            [self addPoint:CGPointMake(UUYLabelwidth+i*_xLabelWidth,self.frame.size.height-UULabelHeight-10) index:i isShow:YES value:0 ];
+            [self addPoint:CGPointMake(UUYLabelwidth+i*_xLabelWidth,self.frame.size.height-UULabelHeight-10)];
+        }
+    }else{
+        
+        //画竖线
+        for (int i=0; i<count; i++) {
+            CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+            UIBezierPath *path = [UIBezierPath bezierPath];
+            [path moveToPoint:CGPointMake(UUYLabelwidth+i*_xLabelWidth,0)];
+            [path addLineToPoint:CGPointMake(UUYLabelwidth+i*_xLabelWidth,self.frame.size.height-UULabelHeight-10)];
+            [path closePath];
+            shapeLayer.path = path.CGPath;
+            shapeLayer.strokeColor =  self.yLineColor ? self.yLineColor.CGColor : [[[UIColor blackColor] colorWithAlphaComponent:0.1] CGColor];
+            shapeLayer.fillColor = [[UIColor whiteColor] CGColor];
+            shapeLayer.lineWidth = 1;
+            [self.myScrollView.layer addSublayer:shapeLayer];
+        }
+        
     }
     
-    float max = (([xLabels count]-1)*_xLabelWidth + chartMargin)+_xLabelWidth;
-    float yMax = (([self.yLabels count]-1)*UULabelHeight + yLabelMargin)+UULabelHeight;
+    float max = ((count-1)*_xLabelWidth + chartMargin)+_xLabelWidth;
     if (self.myScrollView.frame.size.width < max-10) {
-        self.myScrollView.contentSize = CGSizeMake(max, yMax);
+        self.myScrollView.contentSize = CGSizeMake(max+10, 0);
     }
 
 }
@@ -91,7 +116,9 @@
 - (void)setYLabels:(NSArray *)yLabels
 {
     _yLabels = yLabels;
-
+    _xLabelWidth = (self.myScrollView.frame.size.width - UUYLabelwidth * 0.5)/(self.style ? 23 : 10);
+    
+  
     CGFloat _yValueMax = [[self.yLabels valueForKeyPath:@"@max.floatValue"] floatValue];
     CGFloat _yValueMin = [[self.yLabels valueForKeyPath:@"@min.floatValue"] floatValue];
     float level = (_yValueMax-_yValueMin) /3;
@@ -103,20 +130,26 @@
         label.text = [NSString stringWithFormat:@"%d%@",(int)(level * i+_yValueMin),self.unit ? self.unit : @""];
         [self addSubview:label];
     }
-
     
-    //画横线
-    for (int i=0; i<4; i++) {
-        CAShapeLayer *shapeLayer = [CAShapeLayer layer];
-        UIBezierPath *path = [UIBezierPath bezierPath];
-        [path moveToPoint:CGPointMake(20,UULabelHeight+i*levelHeight)];
-        [path addLineToPoint:CGPointMake(self.frame.size.width,UULabelHeight+i*levelHeight)];
-        [path closePath];
-        shapeLayer.path = path.CGPath;
-        shapeLayer.strokeColor = self.xlineColor ? self.xlineColor.CGColor :[[[UIColor blackColor] colorWithAlphaComponent:0.1] CGColor];
-        shapeLayer.fillColor = [[UIColor whiteColor] CGColor];
-        shapeLayer.lineWidth = 1;
-        [self.layer insertSublayer:shapeLayer atIndex:0];
+    if (self.style == YzcLineGrid) {
+        //画横线
+        for (int i=0; i<4; i++) {
+            CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+            UIBezierPath *path = [UIBezierPath bezierPath];
+            [path moveToPoint:CGPointMake(20,UULabelHeight+i*levelHeight)];
+            [path addLineToPoint:CGPointMake(self.frame.size.width,UULabelHeight+i*levelHeight)];
+            [path closePath];
+            shapeLayer.path = path.CGPath;
+            shapeLayer.strokeColor = self.xlineColor ? self.xlineColor.CGColor :[[[UIColor blackColor] colorWithAlphaComponent:0.1] CGColor];
+            shapeLayer.fillColor = [[UIColor whiteColor] CGColor];
+            shapeLayer.lineWidth = 1;
+            [self.layer insertSublayer:shapeLayer atIndex:0];
+        }
+        
+        float max = (([yLabels count]-1)*_xLabelWidth + chartMargin)+_xLabelWidth;
+        if (self.myScrollView.frame.size.width < max-10) {
+            self.myScrollView.contentSize = CGSizeMake(max+10, 0);
+        }
     }
 }
 
@@ -156,7 +189,7 @@
     bezier1.lineCapStyle = kCGLineCapRound;
     bezier1.lineJoinStyle = kCGLineJoinMiter;
     [bezier1 moveToPoint:firstPoint];
-    self.originPoint = firstPoint;       //记录原点
+    self.originPoint = firstPoint;       //记录原点 
     
     NSInteger index = 0;
     for (NSString * valueString in _yLabels) {
@@ -227,6 +260,17 @@
     view.layer.borderWidth = 2;
     view.layer.borderColor = self.pointColor ? self.pointColor.CGColor : [UIColor greenColor].CGColor;
     view.backgroundColor = self.pointColor;
+    [self.myScrollView addSubview:view];
+}
+
+- (void)addPoint:(CGPoint)point
+{
+    CGFloat viewWH = 5;
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, viewWH, viewWH)];
+    view.center = point;
+    view.layer.masksToBounds = YES;
+    view.layer.cornerRadius = viewWH*0.5;
+    view.backgroundColor = self.pointColor ? self.pointColor : [UIColor grayColor];
     [self.myScrollView addSubview:view];
 }
 

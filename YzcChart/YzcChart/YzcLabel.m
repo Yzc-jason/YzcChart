@@ -14,7 +14,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
+        
         [self setLineBreakMode:NSLineBreakByWordWrapping];
         [self setMinimumScaleFactor:5.0f];
         [self setNumberOfLines:1];
