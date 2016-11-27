@@ -83,8 +83,7 @@
     if (self.style == YzcLineNone) {
         //画底部的点
         for (int i=0; i<24; i++) {
-            
-//            [self addPoint:CGPointMake(UUYLabelwidth+i*_xLabelWidth,self.frame.size.height-UULabelHeight-10) index:i isShow:YES value:0 ];
+        
             [self addPoint:CGPointMake(UUYLabelwidth+i*_xLabelWidth,self.frame.size.height-UULabelHeight-10)];
         }
     }else{
@@ -117,7 +116,6 @@
 {
     _yLabels = yLabels;
     _xLabelWidth = (self.myScrollView.frame.size.width - UUYLabelwidth * 0.5)/(self.style ? 23 : 10);
-    
   
     CGFloat _yValueMax = [[self.yLabels valueForKeyPath:@"@max.floatValue"] floatValue];
     CGFloat _yValueMin = [[self.yLabels valueForKeyPath:@"@min.floatValue"] floatValue];
@@ -282,7 +280,7 @@
 {
     CAShapeLayer *shadeLayer = [CAShapeLayer layer];
     shadeLayer.path = bezier1.CGPath;
-    shadeLayer.fillColor = [UIColor greenColor].CGColor;
+    shadeLayer.fillColor = [UIColor greenColor].CGColor; 
     
     CAGradientLayer *gradientLayer = [CAGradientLayer layer];
     gradientLayer.frame = CGRectMake(5, 0, 0, self.myScrollView.bounds.size.height-20);

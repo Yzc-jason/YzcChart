@@ -25,7 +25,6 @@ typedef NS_ENUM(NSInteger,YzcLineStyle){
 @property (nonatomic, assign) BOOL isDrawPoint;
 /**是否显示渐变*/
 @property (nonatomic, assign) BOOL isShadow;
-
 /**y轴显示的单位*/
 @property (copy, nonatomic) NSString *unit;
 /**折线的颜色*/
