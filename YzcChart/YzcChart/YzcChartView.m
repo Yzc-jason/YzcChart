@@ -86,6 +86,9 @@
         
             [self addPoint:CGPointMake(UUYLabelwidth+i*_xLabelWidth,self.frame.size.height-UULabelHeight-10)];
         }
+        
+        float max = ((count-1)*_xLabelWidth + chartMargin)+_xLabelWidth;
+        self.myScrollView.contentSize = CGSizeMake(max+10, 0);
     }else{
         
         //画竖线
@@ -102,12 +105,12 @@
             [self.myScrollView.layer addSublayer:shapeLayer];
         }
         
+        float max = ((count-1)*_xLabelWidth + chartMargin)+_xLabelWidth;
+        if (self.myScrollView.frame.size.width < max-10) {
+            self.myScrollView.contentSize = CGSizeMake(max+10, 0);
+        }
     }
     
-    float max = ((count-1)*_xLabelWidth + chartMargin)+_xLabelWidth;
-    if (self.myScrollView.frame.size.width < max-10) {
-        self.myScrollView.contentSize = CGSizeMake(max+10, 0);
-    }
 
 }
 
