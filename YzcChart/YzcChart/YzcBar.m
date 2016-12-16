@@ -12,6 +12,8 @@
 
 @property (nonatomic, strong) CAShapeLayer *progressLayer;
 
+@property (nonatomic, strong) CAGradientLayer *gradientLayer;
+
 @end
 
 @implementation YzcBar
@@ -22,6 +24,26 @@
     if (self) {
         self.clipsToBounds = YES;
         self.layer.cornerRadius = 2.0;
+        
+        //遮罩层
+        _progressLayer = [CAShapeLayer layer];
+        _progressLayer.frame       = self.bounds;
+        _progressLayer.fillColor   = [[UIColor clearColor] CGColor];
+        _progressLayer.lineCap     = kCALineCapRound;
+        _progressLayer.lineWidth   = self.frame.size.width;
+        
+        //渐变图层
+        //        _gradientLayer =  [CAGradientLayer layer];
+        //        _gradientLayer.frame = _progressLayer.frame;
+        //        [_gradientLayer setLocations:@[@0.4,@0.6]];
+        //        [_gradientLayer setStartPoint:CGPointMake(0, 0)];
+        //        [_gradientLayer setEndPoint:CGPointMake(1, 1)];
+        //
+        //        //用progressLayer来截取渐变层 遮罩
+        //        [_gradientLayer setMask:_progressLayer];
+        //        [self.layer addSublayer:_gradientLayer];
+        
+        [self.layer addSublayer:_progressLayer];
     }
     return self;
 }
@@ -39,26 +61,10 @@
     [path setLineWidth:1.0];
     [path setLineCapStyle:kCGLineCapRound];
     
-    //遮罩层
-    _progressLayer = [CAShapeLayer layer];
-    _progressLayer.frame       = self.bounds;
-    _progressLayer.fillColor   = [[UIColor clearColor] CGColor];
     _progressLayer.strokeColor = self.barColor.CGColor;
-    _progressLayer.lineCap     = kCALineCapRound;
-    _progressLayer.lineWidth   = self.frame.size.width;
     
-    //渐变图层
-    CAGradientLayer *gradientLayer =  [CAGradientLayer layer];
-    gradientLayer.frame = _progressLayer.frame;
-    [gradientLayer setColors:[NSArray arrayWithObjects:(id)[self.barColor colorWithAlphaComponent:1].CGColor,(id)[self.barColor colorWithAlphaComponent:0.8].CGColor, nil]];
-    [gradientLayer setLocations:@[@0.4,@0.6]];
-    [gradientLayer setStartPoint:CGPointMake(0, 0)];
-    [gradientLayer setEndPoint:CGPointMake(1, 1)];
-    
-    
-    //用progressLayer来截取渐变层 遮罩
-    [gradientLayer setMask:_progressLayer];
-    [self.layer addSublayer:gradientLayer];
+    //渐变图层颜色
+    //    [_gradientLayer setColors:[NSArray arrayWithObjects:(id)[self.barColor colorWithAlphaComponent:1].CGColor,(id)[self.barColor colorWithAlphaComponent:0.8].CGColor, nil]];
     
     //增加动画
     CABasicAnimation *pathAnimation=[CABasicAnimation animationWithKeyPath:@"strokeEnd"];
@@ -69,6 +75,7 @@
     pathAnimation.autoreverses=NO;
     _progressLayer.path=path.CGPath;
     [_progressLayer addAnimation:pathAnimation forKey:@"strokeEndAnimation"];
+    
 }
 
 //- (void)drawRect:(CGRect)rect

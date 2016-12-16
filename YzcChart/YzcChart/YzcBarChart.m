@@ -59,7 +59,7 @@
     NSInteger count = xLabels.count > 24 ? xLabels.count : 24;
     for (int i=0; i<24; i++) {
         if (i%6 == 0) {
-            YzcLabel * label = [[YzcLabel alloc] initWithFrame:CGRectMake(i * _xLabelWidth+UUYLabelwidth*0.5, self.frame.size.height - UULabelHeight, _xLabelWidth*2, UULabelHeight)];
+            YzcLabel * label = [[YzcLabel alloc] initWithFrame:CGRectMake(i * _xLabelWidth+UUYLabelwidth*0.5+10, self.frame.size.height - UULabelHeight, _xLabelWidth*2+10, UULabelHeight)];
             label.text = [NSString stringWithFormat:@"%02d:00",i];
             [self.myScrollView addSubview:label];
         }
