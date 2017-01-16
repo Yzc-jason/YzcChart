@@ -179,6 +179,9 @@
     
     //第一个点
     float grade = ((float)firstValue-minValue) / ((float)maxValue-minValue);
+    if (isnan(grade)) {
+        grade = 0;
+    }
     CGPoint firstPoint = CGPointMake(xPosition, chartCavanHeight - grade * chartCavanHeight+UULabelHeight);
     [progressline moveToPoint:firstPoint];
     [progressline setLineWidth:2.0];
@@ -196,7 +199,9 @@
     for (NSString * valueString in _yLabels) {
         
         float grade =([valueString floatValue] - minValue) / ((float)maxValue-minValue);
-        
+        if (isnan(grade)) {
+            grade = 0;
+        }
         CGPoint point = CGPointMake(xPosition+index*_xLabelWidth, chartCavanHeight - grade * chartCavanHeight+UULabelHeight);
         
         if (index != 0) {
