@@ -1,2 +1,2 @@
 # YzcChart
- ![img](https://github.com/Yzc-jason/YzcChart/chartGif.gif)
+ ![img](https://github.com/Yzc-jason/YzcChart/blob/master/chartGIf.gif)
