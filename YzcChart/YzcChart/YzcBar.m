@@ -7,8 +7,9 @@
 //
 
 #import "YzcBar.h"
+#import "YzcCommonMacros.h"
 
-@interface YzcBar()
+@interface YzcBar ()
 
 @property (nonatomic, strong) CAShapeLayer *progressLayer;
 
@@ -18,74 +19,75 @@
 
 @implementation YzcBar
 
-- (id)initWithFrame:(CGRect)frame
-{
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         self.clipsToBounds = YES;
-        self.layer.cornerRadius = 2.0;
-        
-        //遮罩层
-        _progressLayer = [CAShapeLayer layer];
-        _progressLayer.frame       = self.bounds;
-        _progressLayer.fillColor   = [[UIColor clearColor] CGColor];
-        _progressLayer.lineCap     = kCALineCapRound;
-        _progressLayer.lineWidth   = self.frame.size.width;
-        
-        //渐变图层
-        //        _gradientLayer =  [CAGradientLayer layer];
-        //        _gradientLayer.frame = _progressLayer.frame;
-        //        [_gradientLayer setLocations:@[@0.4,@0.6]];
-        //        [_gradientLayer setStartPoint:CGPointMake(0, 0)];
-        //        [_gradientLayer setEndPoint:CGPointMake(1, 1)];
-        //
-        //        //用progressLayer来截取渐变层 遮罩
-        //        [_gradientLayer setMask:_progressLayer];
-        //        [self.layer addSublayer:_gradientLayer];
-        
-        [self.layer addSublayer:_progressLayer];
+
+        //填充色层
+        self.progressLayer           = [CAShapeLayer layer];
+        self.progressLayer.frame     = self.bounds;
+        self.progressLayer.fillColor = [[UIColor clearColor] CGColor];
+        self.progressLayer.lineCap   = kCALineCapSquare;
+        self.progressLayer.lineWidth = self.frame.size.width;
+
+        [self.layer addSublayer:self.progressLayer];
     }
     return self;
 }
 
--(void)setGradePercent:(float)gradePercent
-{
-    if (gradePercent==0)
-        return;
-    
-    _gradePercent = gradePercent;
-    
+- (void)setPercent:(CGFloat)percent {
+    if (percent == 0) {
+        percent                   = 0.08;
+        self.progressLayer.strokeColor = self.emptyDataBarColor.CGColor;
+    } else {
+        percent                   = percent < 0.1 ? 0.1 : percent;
+        self.progressLayer.strokeColor = self.barColor.CGColor;
+    }
+
+    _percent = percent;
+
     UIBezierPath *path = [UIBezierPath bezierPath];
-    [path moveToPoint:CGPointMake(self.frame.size.width/2.0, self.frame.size.height+30)];
-    [path addLineToPoint:CGPointMake(self.frame.size.width/2.0, (1 - gradePercent) * self.frame.size.height+15)];
-    [path setLineWidth:1.0];
-    [path setLineCapStyle:kCGLineCapRound];
+    if (self.isSvgRate) {
+        [path moveToPoint:CGPointMake(self.frame.size.width/2.0, (1-self.startPercent) * self.frame.size.height-5)];
+        [path addLineToPoint:CGPointMake(self.frame.size.width/2.0, (1 - percent) * self.frame.size.height+5 )];
+    }else{
+        [path moveToPoint:CGPointMake(self.frame.size.width/2.0, self.frame.size.height+30)];
+        [path addLineToPoint:CGPointMake(self.frame.size.width/2.0, (1 - percent) * self.frame.size.height+15)];
+    }
     
-    _progressLayer.strokeColor = self.barColor.CGColor;
-    
-    //渐变图层颜色
-    //    [_gradientLayer setColors:[NSArray arrayWithObjects:(id)[self.barColor colorWithAlphaComponent:1].CGColor,(id)[self.barColor colorWithAlphaComponent:0.8].CGColor, nil]];
-    
+    [path setLineWidth:1];
+    [path setLineCapStyle:kCGLineCapSquare];
+
     //增加动画
-    CABasicAnimation *pathAnimation=[CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-    pathAnimation.duration = 2;
-    pathAnimation.timingFunction=[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    pathAnimation.fromValue=[NSNumber numberWithFloat:0.0f];
-    pathAnimation.toValue=[NSNumber numberWithFloat:1.0f];
-    pathAnimation.autoreverses=NO;
-    _progressLayer.path=path.CGPath;
-    [_progressLayer addAnimation:pathAnimation forKey:@"strokeEndAnimation"];
+    CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+    pathAnimation.duration       = 0.5;
+    pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    pathAnimation.fromValue      = [NSNumber numberWithFloat:0.0f];
+    pathAnimation.toValue        = [NSNumber numberWithFloat:1.0f];
+    pathAnimation.autoreverses   = NO;
+    self.progressLayer.path      = path.CGPath;
+    
+    [self.progressLayer addAnimation:pathAnimation forKey:@"strokeEndAnimation"];
     
 }
 
-//- (void)drawRect:(CGRect)rect
-//{
-//    //Draw BG
-//    CGContextRef context = UIGraphicsGetCurrentContext();
-//    CGContextSetFillColorWithColor(context, self.barBgColor.CGColor);
-//    CGContextFillRect(context, rect);
-//}
+- (void)setLeesPercent:(CGFloat)leesPercent {
+    //深睡
+    UIBezierPath *deepSleepPath = [UIBezierPath bezierPath];
+    [deepSleepPath moveToPoint:CGPointMake(self.frame.size.width/2.0, self.frame.size.height+30)];
+    [deepSleepPath addLineToPoint:CGPointMake(self.frame.size.width/2.0, (1 - leesPercent) * self.frame.size.height+15)];
+    [deepSleepPath setLineWidth:1];
+    [deepSleepPath setLineCapStyle:kCGLineCapSquare];
+    
+    CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+    shapeLayer.frame = self.bounds;
+    shapeLayer.fillColor = [UIColor clearColor].CGColor;
+    shapeLayer.lineWidth = self.frame.size.width;
+    shapeLayer.strokeColor = self.lessBarColor.CGColor;
+    shapeLayer.path = deepSleepPath.CGPath;
+    [self.layer addSublayer:shapeLayer];
 
-
+}
 
 @end
