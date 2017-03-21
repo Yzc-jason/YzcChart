@@ -10,6 +10,7 @@
 #import "YzcBarChart.h"
 #import "YzcLineChart.h"
 #import "BarChartModel.h"
+#import "YzcConfigModel.h"
 
 typedef NS_ENUM (NSInteger, YzcChartStyle){
     YzcChartStyleLine = 0,
@@ -22,45 +23,30 @@ typedef NS_ENUM (NSInteger, YzcChartStyle){
 
 @required
 ///横坐标标题数组
-- (NSArray *)chartConfigAxisXLabel:(YzcChartView *)chart;
+- (NSMutableArray *)chartConfigAxisXValue:(YzcChartView *)chart;
 
 ///数值数组
-- (NSArray *)chartConfigAxisYValue:(YzcChartView *)chart;
+- (NSMutableArray *)chartConfigAxisYValue:(YzcChartView *)chart;
 
 @optional
 ///显示数值范围
 - (CGRange)chartRange:(YzcChartView *)chart;
 
-#pragma mark - 折线图功能
-/**
- 折线图表相关颜色
-
- @param chart chart
- @return 1.折线的颜色 2.横线的颜色 3.点的颜色
- */
-- (NSArray *)lineChartRelatedColor:(YzcChartView *)chart;
 
 /**
- 设置图表相关bool
+ 图表效果配置
 
  @param chart chart
- @return 1.是否数值点 2.是否显示渐变
+ @return 配置model
  */
-- (NSArray *)lineChartRelatedBool:(YzcChartView *)chart;
+- (YzcConfigModel *)chartEffectConfig:(YzcChartView *)chart;
 
 #pragma mark - 柱状图功能
-/**
- /柱状图表相关颜色
-
- @param chart chart
- @return  1.柱装条的颜色 2.达标值颜色 3.柱状条空数据时的颜色 4.深睡柱状图颜色 5.心率图表横线颜色
- */
-- (NSArray *)barChartRelatedColor:(YzcChartView *)chart;
 
 - (NSInteger)barChartTargetValue:(YzcChartView *)chart;
 
 /**
- 是否是睡眠样式
+ 柱状图样式
 
  @param chart chart
  @return bool
@@ -85,7 +71,5 @@ typedef NS_ENUM (NSInteger, YzcChartStyle){
 - (id)initWithFrame:(CGRect)rect dataSource:(id<YzcChartDataSource>)dataSource style:(YzcChartStyle)style;
 
 - (void)showInView:(UIView *)view;
-    
-- (void)strokeChart;
 
 @end

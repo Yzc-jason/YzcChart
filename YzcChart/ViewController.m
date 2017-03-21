@@ -56,7 +56,7 @@
 }
 
 #pragma mark - YzcChartDataSource
-- (NSArray *)chartConfigAxisXLabel:(YzcChartView *)chart {
+- (NSMutableArray *)chartConfigAxisXValue:(YzcChartView *)chart {
     NSMutableArray *x = [NSMutableArray array];
 
     switch (chart.tag) {
@@ -87,10 +87,10 @@
         break;
     }
 
-    return (NSArray *)x;
+    return x;
 }
 
-- (NSArray *)chartConfigAxisYValue:(YzcChartView *)chart {
+- (NSMutableArray *)chartConfigAxisYValue:(YzcChartView *)chart {
     NSMutableArray *y = [NSMutableArray array];
 
     switch (chart.tag) {
@@ -128,7 +128,7 @@
         break;
     }
 
-    return (NSArray *)y;
+    return y;
 }
 
 - (CGRange)chartRange:(YzcChartView *)chart {
@@ -150,28 +150,31 @@
         rang = CGRangeMake(150, 0);
         break;
 
-
     default:
         break;
     }
     return rang;
 }
 
-///设置图表相关bool 1.是否数值点 2.是否显示渐变
-- (NSArray *)lineChartRelatedBool:(YzcChartView *)chart {
-    return @[@"1", @"1"];
-}
+- (YzcConfigModel *)chartEffectConfig:(YzcChartView *)chart {
+    YzcConfigModel *model = [[YzcConfigModel alloc] init];
 
-//折线图表相关颜色 1.折线的颜色 2.横线的颜色 3.点的颜色
-- (NSArray *)lineChartRelatedColor:(YzcChartView *)chart {
-    UIColor *color = [UIColor colorWithRed:251/255.0 green:219/255.0 blue:92/255.0 alpha:1];
+    if (chart.tag == 100) {
+        UIColor *color = [UIColor colorWithRed:251/255.0 green:219/255.0 blue:92/255.0 alpha:1];
+        model.lineChartIsShadow             = YES;
+        model.lineChartIsDrawPoint          = YES;
+        model.lineChartValuePointColor      = color;
+        model.lineChartHorizontalLinecColor = color;
+        model.lineChartLineColor            = color;
+    } else {
+        model.barChartLessBarColor         = [UIColor blueColor];
+        model.barChartHorizontalLinecColor = [UIColor grayColor];
+        model.barChartAchieveTargetColor   = [UIColor redColor];
+        model.barChartEmptyDataBarColor    = [UIColor clearColor];
+        model.barColor                     = [UIColor colorWithRed:251/255.0 green:219/255.0 blue:92/255.0 alpha:1];
+    }
 
-    return @[color, color, color];
-}
-
-///柱状图表相关颜色 1.柱装条的颜色 2.达标值颜色  3.柱状条空数据时的颜色 4.深睡柱状图颜色 5.心率图表横线颜色
-- (NSArray *)barChartRelatedColor:(YzcChartView *)chart {
-    return @[[UIColor colorWithRed:251/255.0 green:219/255.0 blue:92/255.0 alpha:1], [UIColor redColor], [UIColor clearColor], [UIColor blueColor], [UIColor grayColor]];
+    return model;
 }
 
 - (BarChartStyle)barChartSleepStyle:(YzcChartView *)chart {

@@ -34,7 +34,7 @@
 #pragma mark - lazy
 - (UILabel *)unitLabel {
     if (_unitLabel == nil) {
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(UUYLabelwidth-10, -10, 100, 40)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(YZCLabelwidth-10, -10, 100, 40)];
         label.text      = NSLocalizedString(@"(次/分)", nil);
         label.textColor = [[UIColor grayColor] colorWithAlphaComponent:0.5];
         [label sizeToFit];
@@ -50,7 +50,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.myScrollView         = [[UIScrollView alloc]initWithFrame:CGRectMake(UUYLabelwidth, 0, frame.size.width-UUYLabelwidth, frame.size.height)];
+        self.myScrollView         = [[UIScrollView alloc]initWithFrame:CGRectMake(YZCLabelwidth, 0, frame.size.width-YZCLabelwidth, frame.size.height)];
         self.myScrollView.bounces = NO;
         [self addSubview:self.myScrollView];
         self.isDrawPoint   = YES;
@@ -70,7 +70,7 @@
     }
 }
 
--(void)setIsHiddenLastValue:(BOOL)isHiddenLastValue {
+- (void)setIsHiddenLastValue:(BOOL)isHiddenLastValue {
     _isHiddenLastValue = isHiddenLastValue;
 }
 
@@ -83,15 +83,15 @@
     _intervalValue = intervalValue;
 }
 
-- (void)setXLabels:(NSArray *)xLabels {
-    _xLabels         = xLabels;
+- (void)setXLabels:(NSMutableArray *)xLabels {
+    _xLabels = xLabels;
     NSInteger count = xLabels.count;
-    self.xLabelWidth = (self.myScrollView.frame.size.width - UUYLabelwidth * 0.5)/count;
+    self.xLabelWidth = (self.myScrollView.frame.size.width - YZCLabelwidth * 0.5)/count;
 
     for (int i = 0; i < count; i++) {
         if (i%self.intervalValue == 0) {
             NSString *labelText = xLabels[i];
-            YzcLabel *label     = [[YzcLabel alloc] initWithFrame:CGRectMake(i * self.xLabelWidth+UUYLabelwidth*0.5 - 5, self.frame.size.height - UULabelHeight+5, self.xLabelWidth+10, UULabelHeight)];
+            YzcLabel *label     = [[YzcLabel alloc] initWithFrame:CGRectMake(i * self.xLabelWidth+YZCLabelwidth*0.5 - 5, self.frame.size.height - YZCLabelHeight+5, self.xLabelWidth+10, YZCLabelHeight)];
             label.text = labelText;
             [label sizeToFit];
             [self.myScrollView addSubview:label];
@@ -103,9 +103,9 @@
     }
 }
 
-- (void)setYLabels:(NSArray *)yLabels {
+- (void)setYLabels:(NSMutableArray *)yLabels {
     _yLabels         = yLabels;
-    self.xLabelWidth = (self.myScrollView.frame.size.width - UUYLabelwidth * 0.5)/self.yLabels.count;
+    self.xLabelWidth = (self.myScrollView.frame.size.width - YZCLabelwidth * 0.5)/self.yLabels.count;
 
     _yValueMax = [[self.yLabels valueForKeyPath:@"@max.floatValue"] floatValue];
     _yValueMin = [[self.yLabels valueForKeyPath:@"@min.floatValue"] floatValue];
@@ -117,15 +117,13 @@
 
 
     float   level            = (_yValueMax-_yValueMin) / (LINE_COUNT - 1);
-    CGFloat chartCavanHeight = self.frame.size.height - UULabelHeight*(LINE_COUNT - 1);
+    CGFloat chartCavanHeight = self.frame.size.height - YZCLabelHeight*(LINE_COUNT - 1);
     CGFloat levelHeight      = chartCavanHeight / (LINE_COUNT - 1);
 
     for (int i = 0; i < LINE_COUNT; i++) {
-        
-        CGFloat labelValue  = level * i+_yValueMin;
+        CGFloat labelValue = level * i+_yValueMin;
         if (labelValue) {
-            
-            YzcLabel *label = [[YzcLabel alloc] initWithFrame:CGRectMake(5, chartCavanHeight - i * levelHeight + 13, UUYLabelwidth+20, UULabelHeight)];
+            YzcLabel *label = [[YzcLabel alloc] initWithFrame:CGRectMake(5, chartCavanHeight - i * levelHeight + 13, YZCLabelwidth+20, YZCLabelHeight)];
             label.text = [NSString stringWithFormat:@"%.0f", labelValue];
             [label sizeToFit];
             [self addSubview:label];
@@ -135,15 +133,15 @@
 
     //画横线
     for (int i = 0; i < LINE_COUNT; i++) {
-        UIColor *lineColor = self.HorizontalLinecColor ? self.HorizontalLinecColor : [[UIColor grayColor] colorWithAlphaComponent:0.1];
+        UIColor *lineColor = self.HorizontalLinecColor ? self.HorizontalLinecColor : [[UIColor grayColor] colorWithAlphaComponent:0.5];
 
         if (i == LINE_COUNT - 1) {
-            [self drawSolideLineWithMoveToPoint:CGPointMake(30, UULabelHeight+i*levelHeight)
-                                    lineToPoint:CGPointMake(self.frame.size.width, UULabelHeight+i*levelHeight)
+            [self drawSolideLineWithMoveToPoint:CGPointMake(30, YZCLabelHeight+i*levelHeight)
+                                    lineToPoint:CGPointMake(self.frame.size.width, YZCLabelHeight+i*levelHeight)
                                       lineColor:lineColor];
         } else {
             [self drawDashLine:self.myScrollView
-                         point:CGPointMake(30, UULabelHeight+i*levelHeight)
+                         point:CGPointMake(30, YZCLabelHeight+i*levelHeight)
                     lineLength:2
                    lineSpacing:1 lineColor:lineColor];
         }
@@ -168,7 +166,7 @@
     UIBezierPath *progressline    = [UIBezierPath bezierPath];
     CGFloat      firstValue       = [[self.yLabels objectAtIndex:0] floatValue];
     CGFloat      xPosition        = 10;
-    CGFloat      chartCavanHeight = self.myScrollView.frame.size.height - UULabelHeight*(LINE_COUNT-1);
+    CGFloat      chartCavanHeight = self.myScrollView.frame.size.height - YZCLabelHeight*(LINE_COUNT-1);
 
     //第一个点
     float grade = ((float)firstValue-_yValueMin) / ((float)_yValueMax-_yValueMin);
@@ -180,7 +178,7 @@
         return;
     }
 
-    CGPoint firstPoint = CGPointMake(xPosition, chartCavanHeight - grade * chartCavanHeight+UULabelHeight);
+    CGPoint firstPoint = CGPointMake(xPosition, chartCavanHeight - grade * chartCavanHeight+YZCLabelHeight);
     [progressline moveToPoint:firstPoint];
     [progressline setLineWidth:2.0];
     [progressline setLineCapStyle:kCGLineCapRound];
@@ -199,7 +197,7 @@
         if (isnan(grade)) {
             grade = 0;
         }
-        CGPoint point = CGPointMake(xPosition+index*self.xLabelWidth, chartCavanHeight - grade * chartCavanHeight+UULabelHeight);
+        CGPoint point = CGPointMake(xPosition+index*self.xLabelWidth, chartCavanHeight - grade * chartCavanHeight+YZCLabelHeight);
 
         if (index != 0) {
             [progressline addLineToPoint:point];
@@ -217,8 +215,7 @@
                     isShow:isShowMaxAndMinPoint
                      value:[valueString integerValue]];
         }
-        index        += 1;
-
+        index += 1;
     }
 
 
@@ -236,8 +233,8 @@
     chartLine.strokeEnd = 1.0;
 
     if (self.isShadow) {
-        [bezier1 addLineToPoint:CGPointMake(self.lastPoint.x, self.myScrollView.frame.size.height - UULabelHeight)];
-        [bezier1 addLineToPoint:CGPointMake(self.originPoint.x, self.myScrollView.frame.size.height - UULabelHeight)];
+        [bezier1 addLineToPoint:CGPointMake(self.lastPoint.x, self.myScrollView.frame.size.height - YZCLabelHeight)];
+        [bezier1 addLineToPoint:CGPointMake(self.originPoint.x, self.myScrollView.frame.size.height - YZCLabelHeight)];
         [bezier1 addLineToPoint:self.originPoint];
 
         [self addGradientLayer:bezier1];

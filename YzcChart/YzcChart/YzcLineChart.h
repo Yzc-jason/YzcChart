@@ -13,8 +13,8 @@
 
 @interface YzcLineChart : UIView
 
-@property (copy, nonatomic) NSArray *xLabels;
-@property (copy, nonatomic) NSArray *yLabels;
+@property (copy, nonatomic) NSMutableArray *xLabels;
+@property (copy, nonatomic) NSMutableArray *yLabels;
 
 @property (nonatomic, assign) BOOL isDrawPoint; /**是否数值点*/
 @property (nonatomic, assign) BOOL isShadow; /**是否显示渐变*/

@@ -17,8 +17,8 @@ typedef NS_ENUM (NSInteger, BarChartStyle) {
 
 @interface YzcBarChart : UIView
 
-@property (nonatomic, copy) NSArray *xLabels;
-@property (nonatomic, copy) NSArray *yLabels;
+@property (nonatomic, copy) NSMutableArray *xLabels;
+@property (nonatomic, copy) NSMutableArray *yLabels;
 
 @property (nonatomic, strong) UIColor *barColor;/**柱装条的颜色*/
 @property (nonatomic, strong) UIColor *achieveTargetColor;/**柱装超过目标值的颜色*/

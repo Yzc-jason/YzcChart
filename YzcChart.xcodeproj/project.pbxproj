@@ -18,10 +18,11 @@
 		045383101DD411A400BAF33D /* YzcChartTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0453830F1DD411A400BAF33D /* YzcChartTests.m */; };
 		0453831B1DD411A400BAF33D /* YzcChartUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0453831A1DD411A400BAF33D /* YzcChartUITests.m */; };
 		A54C6B201E7B835400429309 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = A54C6B1F1E7B835400429309 /* UIView+Extension.m */; };
-		A54C6B231E7C036900429309 /* BarChartModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A54C6B221E7C036900429309 /* BarChartModel.m */; };
+		A5CB26991E80C41600345B41 /* YzcConfigModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A5CB26981E80C41600345B41 /* YzcConfigModel.m */; };
 		A5F89C5A1E7A8A57000E909C /* YzcChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F89C591E7A8A57000E909C /* YzcChartView.m */; };
 		D71181C71DE9BE46006BF97E /* YzcBarChart.m in Sources */ = {isa = PBXBuildFile; fileRef = D71181C61DE9BE46006BF97E /* YzcBarChart.m */; };
 		D71181CA1DE9C4A8006BF97E /* YzcBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D71181C91DE9C4A8006BF97E /* YzcBar.m */; };
+		D7F07FCD1E816A0000143F7C /* BarChartModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D7F07FCC1E816A0000143F7C /* BarChartModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,8 +65,8 @@
 		0453831C1DD411A400BAF33D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A54C6B1E1E7B835400429309 /* UIView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extension.h"; sourceTree = "<group>"; };
 		A54C6B1F1E7B835400429309 /* UIView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extension.m"; sourceTree = "<group>"; };
-		A54C6B211E7C036900429309 /* BarChartModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarChartModel.h; sourceTree = "<group>"; };
-		A54C6B221E7C036900429309 /* BarChartModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BarChartModel.m; sourceTree = "<group>"; };
+		A5CB26971E80C41600345B41 /* YzcConfigModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YzcConfigModel.h; sourceTree = "<group>"; };
+		A5CB26981E80C41600345B41 /* YzcConfigModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YzcConfigModel.m; sourceTree = "<group>"; };
 		A5F89C571E7A3F70000E909C /* YzcCommonMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YzcCommonMacros.h; sourceTree = "<group>"; };
 		A5F89C581E7A8A57000E909C /* YzcChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YzcChartView.h; sourceTree = "<group>"; };
 		A5F89C591E7A8A57000E909C /* YzcChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YzcChartView.m; sourceTree = "<group>"; };
@@ -73,6 +74,8 @@
 		D71181C61DE9BE46006BF97E /* YzcBarChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YzcBarChart.m; sourceTree = "<group>"; };
 		D71181C81DE9C4A8006BF97E /* YzcBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YzcBar.h; sourceTree = "<group>"; };
 		D71181C91DE9C4A8006BF97E /* YzcBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YzcBar.m; sourceTree = "<group>"; };
+		D7F07FCB1E816A0000143F7C /* BarChartModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarChartModel.h; sourceTree = "<group>"; };
+		D7F07FCC1E816A0000143F7C /* BarChartModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BarChartModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +106,7 @@
 		044975841DE6766F005F1E0C /* YzcChart */ = {
 			isa = PBXGroup;
 			children = (
+				A5CB26931E80C2FD00345B41 /* Model */,
 				044975851DE6766F005F1E0C /* YzcLineChart.h */,
 				044975861DE6766F005F1E0C /* YzcLineChart.m */,
 				044975871DE6766F005F1E0C /* YzcLabel.h */,
@@ -116,8 +120,6 @@
 				A5F89C591E7A8A57000E909C /* YzcChartView.m */,
 				A54C6B1E1E7B835400429309 /* UIView+Extension.h */,
 				A54C6B1F1E7B835400429309 /* UIView+Extension.m */,
-				A54C6B211E7C036900429309 /* BarChartModel.h */,
-				A54C6B221E7C036900429309 /* BarChartModel.m */,
 			);
 			path = YzcChart;
 			sourceTree = "<group>";
@@ -183,6 +185,17 @@
 				0453831C1DD411A400BAF33D /* Info.plist */,
 			);
 			path = YzcChartUITests;
+			sourceTree = "<group>";
+		};
+		A5CB26931E80C2FD00345B41 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D7F07FCB1E816A0000143F7C /* BarChartModel.h */,
+				D7F07FCC1E816A0000143F7C /* BarChartModel.m */,
+				A5CB26971E80C41600345B41 /* YzcConfigModel.h */,
+				A5CB26981E80C41600345B41 /* YzcConfigModel.m */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -252,7 +265,7 @@
 				TargetAttributes = {
 					045382F11DD411A400BAF33D = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = ZFHSP8SEMY;
+						DevelopmentTeam = 4XLMJ8J23D;
 						ProvisioningStyle = Automatic;
 					};
 					0453830A1DD411A400BAF33D = {
@@ -321,8 +334,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7F07FCD1E816A0000143F7C /* BarChartModel.m in Sources */,
 				A54C6B201E7B835400429309 /* UIView+Extension.m in Sources */,
 				044975891DE6766F005F1E0C /* YzcLineChart.m in Sources */,
+				A5CB26991E80C41600345B41 /* YzcConfigModel.m in Sources */,
 				045382FD1DD411A400BAF33D /* ViewController.m in Sources */,
 				045382FA1DD411A400BAF33D /* AppDelegate.m in Sources */,
 				0449758A1DE6766F005F1E0C /* YzcLabel.m in Sources */,
@@ -330,7 +345,6 @@
 				045382F71DD411A400BAF33D /* main.m in Sources */,
 				D71181CA1DE9C4A8006BF97E /* YzcBar.m in Sources */,
 				D71181C71DE9BE46006BF97E /* YzcBarChart.m in Sources */,
-				A54C6B231E7C036900429309 /* BarChartModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -479,7 +493,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = ZFHSP8SEMY;
+				DEVELOPMENT_TEAM = 4XLMJ8J23D;
 				INFOPLIST_FILE = YzcChart/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -492,7 +506,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = ZFHSP8SEMY;
+				DEVELOPMENT_TEAM = 4XLMJ8J23D;
 				INFOPLIST_FILE = YzcChart/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
