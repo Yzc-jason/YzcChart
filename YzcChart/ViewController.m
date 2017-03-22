@@ -177,7 +177,7 @@
     return model;
 }
 
-- (BarChartStyle)barChartSleepStyle:(YzcChartView *)chart {
+- (BarChartStyle)barChartStyle:(YzcChartView *)chart {
     if (chart.tag == 300) {
         return BarChartStyleSleep;
     } else if (chart.tag == 400) {

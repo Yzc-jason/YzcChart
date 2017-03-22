@@ -85,8 +85,8 @@
         if ([self.dataSource respondsToSelector:@selector(barChartTargetValue:)]) {
             self.barChart.targetValue = [self.dataSource barChartTargetValue:self];
         }
-        if ([self.dataSource respondsToSelector:@selector(barChartSleepStyle:)]) {
-            self.barChart.style = [self.dataSource barChartSleepStyle:self];
+        if ([self.dataSource respondsToSelector:@selector(barChartStyle:)]) {
+            self.barChart.style = [self.dataSource barChartStyle:self];
         }
 
         self.barChart.isShowLastValue = self.isShowLastValue;

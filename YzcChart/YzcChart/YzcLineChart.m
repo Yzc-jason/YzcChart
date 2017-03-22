@@ -115,7 +115,6 @@
         _yValueMin = _chooseRange.min;
     }
 
-
     float   level            = (_yValueMax-_yValueMin) / (LINE_COUNT - 1);
     CGFloat chartCavanHeight = self.frame.size.height - YZCLabelHeight*(LINE_COUNT - 1);
     CGFloat levelHeight      = chartCavanHeight / (LINE_COUNT - 1);
@@ -129,7 +128,6 @@
             [self addSubview:label];
         }
     }
-
 
     //画横线
     for (int i = 0; i < LINE_COUNT; i++) {
@@ -154,7 +152,6 @@
 
     //划线
     CAShapeLayer *chartLine = [CAShapeLayer layer];
-
     chartLine.lineCap   = kCALineCapRound; //设置线条拐角帽的样式
     chartLine.lineJoin  = kCALineJoinRound; //设置两条线连结点的样式
     chartLine.fillColor = [[UIColor clearColor] CGColor];
@@ -242,7 +239,7 @@
 }
 
 - (void)addPoint:(CGPoint)point index:(NSInteger)index isShow:(BOOL)isHollow value:(NSInteger)value {
-    CGFloat viewWH = 7;
+    CGFloat viewWH = 5;
     UIView  *view  = [[UIView alloc]initWithFrame:CGRectMake(5, 5, viewWH, viewWH)];
 
     view.center              = point;
@@ -288,6 +285,7 @@
 
     CALayer *baseLayer = [CALayer layer];
     [baseLayer addSublayer:gradientLayer];
+    //截取渐变层
     [baseLayer setMask:shadeLayer];
     [self.myScrollView.layer insertSublayer:baseLayer atIndex:0];
 

@@ -143,7 +143,6 @@
             [self addSubview:label];
         }
 
-
         //画横线
         for (int i = 0; i < LINE_COUNT+1; i++) {
             UIColor *lineColor = self.HorizontalLinecColor ? self.HorizontalLinecColor : [[UIColor grayColor] colorWithAlphaComponent:0.5];

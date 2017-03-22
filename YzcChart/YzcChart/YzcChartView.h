@@ -51,7 +51,7 @@ typedef NS_ENUM (NSInteger, YzcChartStyle){
  @param chart chart
  @return bool
  */
-- (BarChartStyle)barChartSleepStyle:(YzcChartView *)chart;
+- (BarChartStyle)barChartStyle:(YzcChartView *)chart;
 
 @end
 
