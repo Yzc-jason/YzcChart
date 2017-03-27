@@ -13,20 +13,14 @@
 @interface YzcLineChart ()
 
 @property (nonatomic) CGFloat xLabelWidth;
-
 @property (nonatomic, strong) UIScrollView *myScrollView;
-
 @property (nonatomic, strong) UILabel *unitLabel;
-
 @property (nonatomic, assign) CGPoint lastPoint;;
-
 @property (nonatomic, assign) CGPoint originPoint;
-
 @property (nonatomic, assign) CGFloat yValueMin;
-
 @property (nonatomic, assign) CGFloat yValueMax;
-
 @property (nonatomic, assign) BOOL isLastIndex;
+
 @end
 
 @implementation YzcLineChart

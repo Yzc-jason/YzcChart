@@ -11,9 +11,7 @@
 @interface YzcChartView ()
 
 @property (assign, nonatomic) id<YzcChartDataSource> dataSource;
-
 @property (strong, nonatomic) YzcLineChart *lineChart;
-
 @property (strong, nonatomic) YzcBarChart *barChart;
 
 @end

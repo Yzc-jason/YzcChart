@@ -15,19 +15,12 @@
 @interface YzcBarChart ()
 
 @property (nonatomic) CGFloat xLabelWidth;
-
 @property (nonatomic, strong) UIScrollView *myScrollView;
-
 @property (nonatomic, assign) CGPoint lastPoint;;
-
 @property (nonatomic, assign) CGPoint originPoint;
-
 @property (nonatomic, strong) UILabel *unitLabel;
-
 @property (nonatomic, assign) CGFloat yValueMax;
-
 @property (nonatomic, assign) CGFloat yValueMin;
-
 @property (nonatomic, assign) CGFloat targetPercent;
 
 @end

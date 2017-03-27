@@ -12,7 +12,6 @@
 @interface YzcBar ()
 
 @property (nonatomic, strong) CAShapeLayer *progressLayer;
-
 @property (nonatomic, strong) CAGradientLayer *gradientLayer;
 
 @end
