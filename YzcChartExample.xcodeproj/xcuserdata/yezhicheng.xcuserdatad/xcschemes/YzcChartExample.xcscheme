@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "045382F11DD411A400BAF33D"
-               BuildableName = "YzcChart.app"
-               BlueprintName = "YzcChart"
-               ReferencedContainer = "container:YzcChart.xcodeproj">
+               BuildableName = "YzcChartExample.app"
+               BlueprintName = "YzcChartExample"
+               ReferencedContainer = "container:YzcChartExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "0453830A1DD411A400BAF33D"
-               BuildableName = "YzcChartTests.xctest"
-               BlueprintName = "YzcChartTests"
-               ReferencedContainer = "container:YzcChart.xcodeproj">
+               BuildableName = "YzcChartExampleTests.xctest"
+               BlueprintName = "YzcChartExampleTests"
+               ReferencedContainer = "container:YzcChartExample.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "045383151DD411A400BAF33D"
-               BuildableName = "YzcChartUITests.xctest"
-               BlueprintName = "YzcChartUITests"
-               ReferencedContainer = "container:YzcChart.xcodeproj">
+               BuildableName = "YzcChartExampleUITests.xctest"
+               BlueprintName = "YzcChartExampleUITests"
+               ReferencedContainer = "container:YzcChartExample.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -53,9 +53,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "045382F11DD411A400BAF33D"
-            BuildableName = "YzcChart.app"
-            BlueprintName = "YzcChart"
-            ReferencedContainer = "container:YzcChart.xcodeproj">
+            BuildableName = "YzcChartExample.app"
+            BlueprintName = "YzcChartExample"
+            ReferencedContainer = "container:YzcChartExample.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -76,9 +76,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "045382F11DD411A400BAF33D"
-            BuildableName = "YzcChart.app"
-            BlueprintName = "YzcChart"
-            ReferencedContainer = "container:YzcChart.xcodeproj">
+            BuildableName = "YzcChartExample.app"
+            BlueprintName = "YzcChartExample"
+            ReferencedContainer = "container:YzcChartExample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -95,9 +95,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "045382F11DD411A400BAF33D"
-            BuildableName = "YzcChart.app"
-            BlueprintName = "YzcChart"
-            ReferencedContainer = "container:YzcChart.xcodeproj">
+            BuildableName = "YzcChartExample.app"
+            BlueprintName = "YzcChartExample"
+            ReferencedContainer = "container:YzcChartExample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

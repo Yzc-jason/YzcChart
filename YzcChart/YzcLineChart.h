@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "YzcCommonMacros.h"
 
-
-
 @interface YzcLineChart : UIView
 
 @property (copy, nonatomic) NSMutableArray *xLabels;

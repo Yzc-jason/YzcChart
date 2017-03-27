@@ -8,11 +8,11 @@
 
 #import <XCTest/XCTest.h>
 
-@interface YzcChartTests : XCTestCase
+@interface YzcChartExampleTests : XCTestCase
 
 @end
 
-@implementation YzcChartTests
+@implementation YzcChartExampleTests
 
 - (void)setUp {
     [super setUp];
