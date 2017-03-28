@@ -11,9 +11,7 @@
 @interface YzcChartView ()
 
 @property (assign, nonatomic) id<YzcChartDataSource> dataSource;
-
 @property (strong, nonatomic) YzcLineChart *lineChart;
-
 @property (strong, nonatomic) YzcBarChart *barChart;
 
 @end
@@ -53,7 +51,7 @@
             self.lineChart.HorizontalLinecColor = model.lineChartHorizontalLinecColor;
             self.lineChart.pointColor           = model.lineChartValuePointColor;
             self.lineChart.isDrawPoint          = model.lineChartIsDrawPoint ? model.lineChartIsDrawPoint : YES;
-            self.lineChart.isShadow             = model.lineChartIsShadow ? model.lineChartIsShadow : YES;
+            self.lineChart.isShadow             = model.lineChartIsShadow;
         }
 
         self.lineChart.isHiddenLastValue = self.isShowLastValue;
@@ -92,7 +90,7 @@
         self.barChart.isShowLastValue = self.isShowLastValue;
         self.barChart.isHiddenUnit    = self.isHiddenUnit ? self.isHiddenUnit : YES;
         self.barChart.unitString      = self.unitString;
-        self.barChart.intervalValue   = self.intervalValue;
+        self.barChart.intervalValue   = self.intervalValue? self.intervalValue : 1;
         [self.barChart setYLabels:[self.dataSource chartConfigAxisYValue:self]];
         [self.barChart setXLabels:[self.dataSource chartConfigAxisXValue:self]];
 
