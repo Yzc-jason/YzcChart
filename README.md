@@ -1,24 +1,25 @@
 # YzcChart
  ![img](https://github.com/Yzc-jason/YzcChart/blob/master/chartGIf.gif)
-##From CocoaPods【使用CocoaPods】
+ 
+## From CocoaPods【使用CocoaPods
 pod 'YzcChart'
-##Manually 【手动导入】
+## Manually 【手动导入】
 - Drag all source files under floder YzcChart to your project.【将YzcChart文件夹中的所有源代码拽入项目中】
 - Import the main header file：#import "YzcChartView.h"【导入主头文件：#import "YzcChartView.h"】
 
-##Examples【示例】
-####lineChart
+## Examples【示例】
+#### lineChart
 ```
     YzcChartView *chartView = [[YzcChartView alloc] initWithFrame:CGRectMake(10, 100, 350, 200) dataSource:self style:YzcChartStyleLine];
     [chartView showInView:self.scrollView];
 
 ```
-####barChart
+#### barChart
 ```
  YzcChartView *chartView2 = [[YzcChartView alloc] initWithFrame:CGRectMake(10, 300, self.view.frame.size.width-30, 200) dataSource:self style:YzcChartStyleBar];
     [chartView2 showInView:self.scrollView];
 ```
-####Must be achieved delegate void【必须实现的代理方法】
+#### Must be achieved delegate void【必须实现的代理方法】
 ```
 ///横坐标标题数组
 - (NSMutableArray *)chartConfigAxisXValue:(YzcChartView *)chart;
@@ -28,7 +29,7 @@ pod 'YzcChart'
 
 ```
 
-####optional delegate method 【可配置的代理方法】
+#### optional delegate method 【可配置的代理方法】
 ```
 ///显示数值范围
 - (CGRange)chartRange:(YzcChartView *)chart;
@@ -55,7 +56,7 @@ pod 'YzcChart'
 - (BarChartStyle)barChartStyle:(YzcChartView *)chart;
 ```
 
-####optional Attributes 【可选属性】
+#### optional Attributes 【可选属性】
 ```
 ///左上角显示单位(未国际化)
 @property (copy, nonatomic) NSString *unitString;
