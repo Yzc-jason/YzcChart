@@ -14,17 +14,16 @@
 
 @interface YzcBarChart ()
 
-@property (nonatomic) CGFloat xLabelWidth;
+@property (nonatomic) CGFloat              xLabelWidth;
 @property (nonatomic, strong) UIScrollView *myScrollView;
-@property (nonatomic, assign) CGPoint lastPoint;;
-@property (nonatomic, assign) CGPoint originPoint;
-@property (nonatomic, strong) UILabel *unitLabel;
-@property (nonatomic, assign) CGFloat yValueMax;
-@property (nonatomic, assign) CGFloat yValueMin;
-@property (nonatomic, assign) CGFloat targetPercent;
+@property (nonatomic, assign) CGPoint      lastPoint;;
+@property (nonatomic, assign) CGPoint      originPoint;
+@property (nonatomic, strong) UILabel      *unitLabel;
+@property (nonatomic, assign) CGFloat      yValueMax;
+@property (nonatomic, assign) CGFloat      yValueMin;
+@property (nonatomic, assign) CGFloat      targetPercent;
 
 @end
-
 
 @implementation YzcBarChart
 
@@ -51,8 +50,8 @@
         self.myScrollView         = [[UIScrollView alloc]initWithFrame:CGRectMake(YZCLabelwidth, 0, frame.size.width-YZCLabelwidth, frame.size.height)];
         self.myScrollView.bounces = NO;
         [self addSubview:self.myScrollView];
-        self.isHiddenUnit      = YES;
-        self.intervalValue     = 1;
+        self.isHiddenUnit  = YES;
+        self.intervalValue = 1;
     }
     return self;
 }
@@ -74,9 +73,10 @@
     _intervalValue = intervalValue;
 }
 
--(void)setIsShowLastValue:(BOOL)isShowLastValue {
+- (void)setIsShowLastValue:(BOOL)isShowLastValue {
     _isShowLastValue = isShowLastValue;
 }
+
 - (void)setXLabels:(NSMutableArray *)xLabels {
     _xLabels     = xLabels;
     _xLabelWidth = (self.myScrollView.frame.size.width - YZCLabelwidth * 0.5)/xLabels.count;
@@ -84,10 +84,18 @@
     for (int i = 0; i < xLabels.count; i++) {
         if (i%self.intervalValue == 0) {
             NSString *labelText = xLabels[i];
-            YzcLabel *label     = [[YzcLabel alloc] initWithFrame:CGRectMake(i * self.xLabelWidth+YZCLabelwidth*0.5, self.frame.size.height - YZCLabelHeight, self.xLabelWidth+10, YZCLabelHeight)];
+            CGFloat labelX = i * self.xLabelWidth+YZCLabelwidth*0.5;
+            if (labelText.length > 3) {  //比较长的横坐标x值需要往左移
+                labelX = labelX - 7;
+            }
+            YzcLabel *label     = [[YzcLabel alloc] initWithFrame:CGRectMake(labelX, self.frame.size.height - YZCLabelHeight, self.xLabelWidth+10, YZCLabelHeight)];
             label.text = labelText;
+            
             [label sizeToFit];
             [self.myScrollView addSubview:label];
+            if (self.isShowLastValue && i == xLabels.count - 1) {
+                label.textColor = [UIColor blackColor];
+            }
         }
     }
 
@@ -115,11 +123,17 @@
         _yValueMin = _chooseRange.min;
     }
 
-    if (self.targetValue) {
+    if (self.targetValue) {  //目标虚线
         CGFloat  chartCavanHeight = self.frame.size.height - YZCLabelHeight * 3 + 8;
         float    percent          = ((float)self.targetValue-_yValueMin) / ((float)_yValueMax-_yValueMin);
         YzcLabel *label           = [[YzcLabel alloc] initWithFrame:CGRectMake(0, (1 - percent) * chartCavanHeight+22, YZCLabelwidth+20, YZCLabelHeight)];
-        label.text = [NSString stringWithFormat:@"%.1fk", self.targetValue >= 1000 ? (float)self.targetValue/1000 : self.targetValue];
+        NSString *targetString;
+        if (self.targetValue >= 1000) {
+            targetString = [NSString stringWithFormat:@"%.1fk", (float)self.targetValue/1000];
+        } else {
+            targetString = [NSString stringWithFormat:@"%zd", self.targetValue];
+        }
+        label.text = targetString;
         [label sizeToFit];
         [self addSubview:label];
     }
@@ -127,7 +141,7 @@
     if (self.style == BarChartStyleRateRange) {
         float   level            = (_yValueMax-_yValueMin) / LINE_COUNT;
         CGFloat chartCavanHeight = self.frame.size.height - YZCLabelHeight * LINE_COUNT + 8;
-        CGFloat levelHeight      = level;//chartCavanHeight / LINE_COUNT ;
+        CGFloat levelHeight      = chartCavanHeight / LINE_COUNT ;
 
         for (int i = 1; i < LINE_COUNT+1; i++) {
             YzcLabel *label = [[YzcLabel alloc] initWithFrame:CGRectMake(0, chartCavanHeight - i * levelHeight + 13, YZCLabelwidth+20, YZCLabelHeight)];
@@ -136,7 +150,7 @@
             [self addSubview:label];
         }
 
-        //画横线
+        //画中间虚线横线
         for (int i = 0; i < LINE_COUNT+1; i++) {
             UIColor *lineColor = self.HorizontalLinecColor ? self.HorizontalLinecColor : [[UIColor grayColor] colorWithAlphaComponent:0.5];
 
@@ -149,9 +163,10 @@
         }
     }
 
+    //最底下一条线
     [self drawSolideLineWithMoveToPoint:CGPointMake(25, self.frame.size.height-YZCLabelHeight-10)
                             lineToPoint:CGPointMake(self.frame.size.width, self.frame.size.height-YZCLabelHeight-10)
-                              lineColor:[UIColor grayColor]];
+                              lineColor:[[UIColor blackColor] colorWithAlphaComponent:0.3]];
 }
 
 #pragma mark - draw
@@ -162,9 +177,9 @@
     _xLabelWidth = (self.myScrollView.frame.size.width - YZCLabelwidth * 0.5)/self.yLabels.count;
 
     for (int i = 0; i < self.yLabels.count; i++) {
-        YzcBar *bar = [[YzcBar alloc] initWithFrame:CGRectMake(i * _xLabelWidth+YZCLabelwidth*0.5, YZCLabelHeight, 5, chartCavanHeight)];
+        YzcBar *bar = [[YzcBar alloc] initWithFrame:CGRectMake(i * _xLabelWidth+YZCLabelwidth*0.5, YZCLabelHeight, 8, chartCavanHeight)];
         bar.emptyDataBarColor = self.emptyDataBarColor ? self.emptyDataBarColor : [[UIColor grayColor] colorWithAlphaComponent:0.5];
-        
+
         if (self.style == BarChartStyleNormal) {
             NSString *valueString = self.yLabels[i];
             float    value        = [valueString floatValue];
@@ -200,7 +215,6 @@
                 } else {
                     bar.barColor = self.barColor ? self.barColor : [UIColor greenColor];
                 }
-
                 bar.lessBarColor = self.lessBarColor ? self.lessBarColor : [UIColor blueColor];
                 bar.percent      = totalPercent;
                 bar.leesPercent  = deepPercent;
@@ -217,10 +231,10 @@
 
             //最后一个点显示数值在上面
             if ((i == self.self.yLabels.count - 1) && self.isShowLastValue) {
-                [self setupLastValueLabelWithView:bar value:totalValue percent:totalPercent chartCavanHeight:chartCavanHeight];
+                [self setupLastValueLabelWithView:bar value:totalValue percent:totalPercent chartCavanHeight:bar.frame.size.height + 10];
             }
         }
-       
+
         [self.myScrollView addSubview:bar];
     }
 }
@@ -232,7 +246,7 @@
     valueLabel.textColor = [UIColor blackColor];
     valueLabel.font      = [UIFont systemFontOfSize:10];
     [valueLabel sizeToFit];
-    CGPoint labelPoint = CGPointMake(valueLabel.text.length >3 ? barView.center.x-5 : barView.center.x, (1 - percent) * chartCavanHeight+15);
+    CGPoint labelPoint = CGPointMake(valueLabel.text.length > 3 ? barView.center.x-5 : barView.center.x, (1 - percent) * chartCavanHeight+15);
     valueLabel.center        = labelPoint;
     valueLabel.textAlignment = NSTextAlignmentCenter;
     [self.myScrollView addSubview:valueLabel];

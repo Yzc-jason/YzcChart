@@ -117,7 +117,13 @@
         CGFloat labelValue = level * i+_yValueMin;
         if (labelValue) {
             YzcLabel *label = [[YzcLabel alloc] initWithFrame:CGRectMake(5, chartCavanHeight - i * levelHeight + 13, YZCLabelwidth+20, YZCLabelHeight)];
-            label.text = [NSString stringWithFormat:@"%.0f", labelValue];
+            NSString *targetString;
+            if (labelValue >= 1000) {
+                targetString = [NSString stringWithFormat:@"%.1fk", (float)labelValue/1000];
+            }else{
+                targetString = [NSString stringWithFormat:@"%.0f", labelValue];
+            }
+            label.text = targetString;
             [label sizeToFit];
             [self addSubview:label];
         }

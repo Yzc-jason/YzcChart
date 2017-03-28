@@ -32,18 +32,19 @@
     [chartView showInView:self.scrollView];
 
     YzcChartView *chartView2 = [[YzcChartView alloc] initWithFrame:CGRectMake(10, 300, self.view.frame.size.width-30, 200) dataSource:self style:YzcChartStyleBar];
-    chartView2.intervalValue   = 4;
+    chartView2.intervalValue   = 1;
     chartView2.tag             = 200;
-    chartView2.isShowLastValue = NO;
+    chartView2.isShowLastValue = YES;
     [chartView2 showInView:self.scrollView];
 
 
     YzcChartView *chartView3 = [[YzcChartView alloc] initWithFrame:CGRectMake(10, 500, self.view.frame.size.width-30, 200) dataSource:self style:YzcChartStyleBar];
     chartView3.intervalValue = 4;
-    chartView3.tag           = 300;    [chartView3 showInView:self.scrollView];
+    chartView3.tag           = 300;
+    chartView3.isShowLastValue = YES;
+    [chartView3 showInView:self.scrollView];
 
-    YzcChartView *chartView4 = [[YzcChartView alloc] initWithFrame:CGRectMake(10, 700, self.view.frame.size.width-30, 200) dataSource:self style:YzcChartStyleBar];
-    chartView4.intervalValue = 1;
+    YzcChartView *chartView4 = [[YzcChartView alloc] initWithFrame:CGRectMake(10, 700, self.view.frame.size.width-30, 150) dataSource:self style:YzcChartStyleBar];
     chartView4.tag           = 400;
     [chartView4 showInView:self.scrollView];
 
@@ -66,8 +67,13 @@
         }
         break;
     case 200:
-        for (int i = 0; i < 31; i++) {
-            [x addObject:[NSString stringWithFormat:@"%zd", i]];
+        for (int i = 0; i < 7; i++) {
+            if (i%2 == 0) {
+                [x addObject:[NSString stringWithFormat:@"23.%zd3", i]];
+            }else{
+                
+                [x addObject:[NSString stringWithFormat:@"%zd3", i]];
+            }
         }
         break;
 
@@ -101,7 +107,7 @@
         break;
 
     case 200:
-        for (int i = 0; i < 31; i++) {
+        for (int i = 0; i < 7; i++) {
             [y addObject:[NSNumber numberWithInt:[self getRandomNumber:1000 to:10000]]];
         }
         break;
@@ -189,6 +195,8 @@
 - (NSInteger)barChartTargetValue:(YzcChartView *)chart {
     if (chart.tag == 200) {
         return 8500;
+    }else if (chart.tag == 300) {
+        return 8;
     }
     return 0;
 }
