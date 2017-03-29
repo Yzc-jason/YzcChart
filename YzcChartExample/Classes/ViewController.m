@@ -138,7 +138,7 @@
 }
 
 - (CGRange)chartRange:(YzcChartView *)chart {
-    CGRange rang;
+    CGRange rang = CGRangeMake(0, 0);
 
     switch (chart.tag) {
     case 100:
@@ -154,9 +154,6 @@
 
     case 400:
         rang = CGRangeMake(150, 0);
-        break;
-
-    default:
         break;
     }
     return rang;

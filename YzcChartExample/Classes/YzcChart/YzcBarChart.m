@@ -102,7 +102,7 @@
     if (self.targetValue) {  //如果设置了目标值就绘制目标虚线
         CGFloat chartCavanHeight = self.frame.size.height - YZCLabelHeight * 3 + 8;
         float   percent          = ((float)self.targetValue-_yValueMin) / ((float)_yValueMax-_yValueMin);
-        self.targetPercent = percent;
+        self.targetPercent = percent>= 1 ? 1 : percent;
         [self drawDashLine:self.myScrollView
                      point:CGPointMake(25, (1 - percent) * chartCavanHeight+30)
                 lineLength:2 lineSpacing:1
@@ -116,17 +116,25 @@
     if (self.style == BarChartStyleNormal) {
         _yValueMax = [[self.yLabels valueForKeyPath:@"@max.floatValue"] floatValue];
         _yValueMin = [[self.yLabels valueForKeyPath:@"@min.floatValue"] floatValue];
+        if (_yValueMax == _yValueMin) {
+            _yValueMin = 0;
+        }
     }
 
     if (_chooseRange.max != _chooseRange.min) {
         _yValueMax = _chooseRange.max;
         _yValueMin = _chooseRange.min;
     }
+    
+    if (_yValueMax < self.targetValue) {
+        _yValueMax = self.targetValue;
+    }
 
     if (self.targetValue) {  //目标虚线
         CGFloat  chartCavanHeight = self.frame.size.height - YZCLabelHeight * 3 + 8;
         float    percent          = ((float)self.targetValue-_yValueMin) / ((float)_yValueMax-_yValueMin);
-        YzcLabel *label           = [[YzcLabel alloc] initWithFrame:CGRectMake(0, (1 - percent) * chartCavanHeight+22, YZCLabelwidth+20, YZCLabelHeight)];
+        CGFloat  labelH           = percent >= 1 ? 22 : (1 - percent) * chartCavanHeight+22;
+        YzcLabel *label           = [[YzcLabel alloc] initWithFrame:CGRectMake(0, labelH, YZCLabelwidth+20, YZCLabelHeight)];
         NSString *targetString;
         if (self.targetValue >= 1000) {
             targetString = [NSString stringWithFormat:@"%.1fk", (float)self.targetValue/1000];
@@ -248,6 +256,9 @@
     [valueLabel sizeToFit];
     CGPoint labelPoint = CGPointMake(valueLabel.text.length > 3 ? barView.center.x-5 : barView.center.x, (1 - percent) * chartCavanHeight+15);
     valueLabel.center        = labelPoint;
+    if (self.yLabels.count == 1) {
+        valueLabel.center = CGPointMake(labelPoint.x + 10, labelPoint.y);
+    }
     valueLabel.textAlignment = NSTextAlignmentCenter;
     [self.myScrollView addSubview:valueLabel];
 }
