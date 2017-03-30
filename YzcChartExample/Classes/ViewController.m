@@ -32,7 +32,7 @@
     [chartView showInView:self.scrollView];
 
     YzcChartView *chartView2 = [[YzcChartView alloc] initWithFrame:CGRectMake(10, 300, self.view.frame.size.width-30, 200) dataSource:self style:YzcChartStyleBar];
-    chartView2.intervalValue   = 1;
+    chartView2.intervalValue   = 6;
     chartView2.tag             = 200;
     chartView2.isShowLastValue = YES;
     [chartView2 showInView:self.scrollView];
@@ -67,12 +67,12 @@
         }
         break;
     case 200:
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i <31; i++) {
             if (i%2 == 0) {
-                [x addObject:[NSString stringWithFormat:@"23.%zd3", i]];
+                [x addObject:[NSString stringWithFormat:@"%zd", i]];
             }else{
                 
-                [x addObject:[NSString stringWithFormat:@"%zd3", i]];
+                [x addObject:[NSString stringWithFormat:@"%zd", i]];
             }
         }
         break;
@@ -107,8 +107,8 @@
         break;
 
     case 200:
-        for (int i = 0; i < 7; i++) {
-            [y addObject:[NSNumber numberWithInt:[self getRandomNumber:1000 to:10000]]];
+        for (int i = 0; i < 31; i++) {
+            [y addObject:[NSNumber numberWithInt:[self getRandomNumber:1000 to:20000]]];
         }
         break;
 
@@ -145,7 +145,7 @@
         rang = CGRangeMake(100, 0);
         break;
     case 200:
-        rang = CGRangeMake(10000, 1000);
+        rang = CGRangeMake(20000, 0);
         break;
 
     case 300:

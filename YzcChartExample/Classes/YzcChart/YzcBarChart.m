@@ -47,7 +47,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.myScrollView         = [[UIScrollView alloc]initWithFrame:CGRectMake(YZCLabelwidth, 0, frame.size.width-YZCLabelwidth, frame.size.height)];
+        self.myScrollView         = [[UIScrollView alloc]initWithFrame:CGRectMake(YZCLabelwidth, 0, frame.size.width-YZCLabelwidth-10, frame.size.height)];
         self.myScrollView.bounces = NO;
         [self addSubview:self.myScrollView];
         self.isHiddenUnit  = YES;
@@ -88,9 +88,11 @@
             if (labelText.length > 3) {  //比较长的横坐标x值需要往左移
                 labelX = labelX - 7;
             }
+            if (labelText.length == 2) {
+                labelX = labelX - 5;
+            }
             YzcLabel *label     = [[YzcLabel alloc] initWithFrame:CGRectMake(labelX, self.frame.size.height - YZCLabelHeight, self.xLabelWidth+10, YZCLabelHeight)];
             label.text = labelText;
-            
             [label sizeToFit];
             [self.myScrollView addSubview:label];
             if (self.isShowLastValue && i == xLabels.count - 1) {
@@ -130,7 +132,7 @@
         _yValueMax = self.targetValue;
     }
 
-    if (self.targetValue) {  //目标虚线
+    if (self.targetValue) {  //目标值
         CGFloat  chartCavanHeight = self.frame.size.height - YZCLabelHeight * 3 + 8;
         float    percent          = ((float)self.targetValue-_yValueMin) / ((float)_yValueMax-_yValueMin);
         CGFloat  labelH           = percent >= 1 ? 22 : (1 - percent) * chartCavanHeight+22;
@@ -172,8 +174,8 @@
     }
 
     //最底下一条线
-    [self drawSolideLineWithMoveToPoint:CGPointMake(25, self.frame.size.height-YZCLabelHeight-10)
-                            lineToPoint:CGPointMake(self.frame.size.width, self.frame.size.height-YZCLabelHeight-10)
+    [self drawSolideLineWithMoveToPoint:CGPointMake(25, self.myScrollView.frame.size.height-YZCLabelHeight-10)
+                            lineToPoint:CGPointMake(self.myScrollView.frame.size.width+20, self.myScrollView.frame.size.height-YZCLabelHeight-10)
                               lineColor:[[UIColor blackColor] colorWithAlphaComponent:0.3]];
 }
 
@@ -255,12 +257,9 @@
     valueLabel.font      = [UIFont systemFontOfSize:10];
     [valueLabel sizeToFit];
     CGPoint labelPoint = CGPointMake(valueLabel.text.length > 3 ? barView.center.x-5 : barView.center.x, (1 - percent) * chartCavanHeight+15);
-    valueLabel.center        = labelPoint;
-    if (self.yLabels.count == 1) {
-        valueLabel.center = CGPointMake(labelPoint.x + 10, labelPoint.y);
-    }
+    valueLabel.center = CGPointMake(self.frame.size.width - 15, labelPoint.y + 5);
     valueLabel.textAlignment = NSTextAlignmentCenter;
-    [self.myScrollView addSubview:valueLabel];
+    [self addSubview:valueLabel];
 }
 
 @end

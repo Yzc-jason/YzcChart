@@ -37,7 +37,7 @@
 
 - (void)setPercent:(CGFloat)percent {
     if (percent == 0) {
-        percent                   = 0.08;
+        percent                   = 0.1;
         self.progressLayer.strokeColor = self.emptyDataBarColor.CGColor;
     } else {
         percent                   = percent < 0.1 ? 0.1 : percent;
