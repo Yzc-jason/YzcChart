@@ -140,6 +140,11 @@
         NSString *targetString;
         if (self.targetValue >= 1000) {
             targetString = [NSString stringWithFormat:@"%.1fk", (float)self.targetValue/1000];
+            NSString *lastNum = [targetString componentsSeparatedByString:@"."][1];
+            if (![lastNum integerValue]) { //没有小数
+                NSString *firstNum = [targetString componentsSeparatedByString:@"."][0];
+                targetString = [NSString stringWithFormat:@"%@k", firstNum];
+            }
         } else {
             targetString = [NSString stringWithFormat:@"%zd", self.targetValue];
         }
@@ -228,6 +233,10 @@
                 bar.lessBarColor = self.lessBarColor ? self.lessBarColor : [UIColor blueColor];
                 bar.percent      = totalPercent;
                 bar.leesPercent  = deepPercent;
+                //最后一个点显示数值在上面
+                if ((i == self.self.yLabels.count - 1) && self.isShowLastValue) {
+                    [self setupLastValueLabelWithView:bar value:totalValue percent:totalPercent chartCavanHeight:bar.frame.size.height + 10];
+                }
             } else if (self.style == BarChartStyleRateRange) {
                 totalValue   = barModel.maxlValue;
                 totalPercent = ((float)totalValue-_yValueMin) / ((float)_yValueMax-_yValueMin);
@@ -239,10 +248,7 @@
                 bar.percent      = totalPercent;
             }
 
-            //最后一个点显示数值在上面
-            if ((i == self.self.yLabels.count - 1) && self.isShowLastValue) {
-                [self setupLastValueLabelWithView:bar value:totalValue percent:totalPercent chartCavanHeight:bar.frame.size.height + 10];
-            }
+           
         }
 
         [self.myScrollView addSubview:bar];
@@ -256,8 +262,11 @@
     valueLabel.textColor = [UIColor blackColor];
     valueLabel.font      = [UIFont systemFontOfSize:10];
     [valueLabel sizeToFit];
-    CGPoint labelPoint = CGPointMake(valueLabel.text.length > 3 ? barView.center.x-5 : barView.center.x, (1 - percent) * chartCavanHeight+15);
-    valueLabel.center = CGPointMake(self.frame.size.width - 15, labelPoint.y + 5);
+    CGPoint labelPoint = CGPointMake(valueLabel.text.length > 3 ? barView.center.x - 3 : barView.center.x, (1 - percent) * chartCavanHeight+15);
+    valueLabel.center        = CGPointMake(labelPoint.x + 20, labelPoint.y );
+    if (self.yLabels.count > 10) {
+        valueLabel.center = CGPointMake(self.frame.size.width - 15, labelPoint.y + 5);
+    }
     valueLabel.textAlignment = NSTextAlignmentCenter;
     [self addSubview:valueLabel];
 }

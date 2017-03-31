@@ -46,6 +46,7 @@
 
     YzcChartView *chartView4 = [[YzcChartView alloc] initWithFrame:CGRectMake(10, 700, self.view.frame.size.width-30, 150) dataSource:self style:YzcChartStyleBar];
     chartView4.tag           = 400;
+    chartView4.isShowLastValue = YES;
     [chartView4 showInView:self.scrollView];
 
 
@@ -67,7 +68,7 @@
         }
         break;
     case 200:
-        for (int i = 0; i <31; i++) {
+        for (int i = 0; i <7; i++) {
             if (i%2 == 0) {
                 [x addObject:[NSString stringWithFormat:@"%zd", i]];
             }else{
@@ -107,7 +108,7 @@
         break;
 
     case 200:
-        for (int i = 0; i < 31; i++) {
+        for (int i = 0; i < 7; i++) {
             [y addObject:[NSNumber numberWithInt:[self getRandomNumber:1000 to:20000]]];
         }
         break;
@@ -191,7 +192,7 @@
 
 - (NSInteger)barChartTargetValue:(YzcChartView *)chart {
     if (chart.tag == 200) {
-        return 8500;
+        return 15000;
     }else if (chart.tag == 300) {
         return 8;
     }
