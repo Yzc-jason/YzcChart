@@ -104,6 +104,7 @@
     case 100:
         for (int i = 0; i < 25; i++) {
             [y addObject:[NSNumber numberWithInt:arc4random()%100]];
+
         }
         break;
 
@@ -165,11 +166,12 @@
 
     if (chart.tag == 100) {
         UIColor *color = [UIColor colorWithRed:251/255.0 green:219/255.0 blue:92/255.0 alpha:1];
-        model.lineChartIsShadow             = YES;
-        model.lineChartIsDrawPoint          = YES;
+        model.lineChartIsShadow             = NO;
+        model.lineChartIsDrawPoint          = NO;
         model.lineChartValuePointColor      = color;
         model.lineChartHorizontalLinecColor = color;
         model.lineChartLineColor            = color;
+        model.lineChartIsShowMaxMinVlaue = YES;
     } else {
         model.barChartLessBarColor         = [UIColor blueColor];
         model.barChartHorizontalLinecColor = [UIColor grayColor];

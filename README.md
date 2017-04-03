@@ -1,7 +1,7 @@
 # YzcChart
  ![img](https://github.com/Yzc-jason/YzcChart/blob/master/chartGIf.gif)
  
-## From CocoaPods【使用CocoaPods
+## From CocoaPods【使用CocoaPods】
 
 ```ruby
 pod 'YzcChart'
