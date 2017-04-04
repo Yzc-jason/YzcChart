@@ -50,10 +50,11 @@
             self.lineChart.lineColor            = model.lineChartLineColor;
             self.lineChart.HorizontalLinecColor = model.lineChartHorizontalLinecColor;
             self.lineChart.pointColor           = model.lineChartValuePointColor;
-            self.lineChart.isDrawPoint          = model.lineChartIsDrawPoint ? model.lineChartIsDrawPoint : YES;
+            self.lineChart.isDrawPoint          = model.lineChartIsDrawPoint;
             self.lineChart.isShadow             = model.lineChartIsShadow;
+            self.lineChart.isShowMaxMinValue    = model.lineChartIsShowMaxMinVlaue;
         }
-
+        
         self.lineChart.isHiddenLastValue = self.isShowLastValue;
         self.lineChart.isHiddenUnit      = self.isHiddenUnit ? self.isHiddenUnit : YES;
         self.lineChart.unitString        = self.unitString;

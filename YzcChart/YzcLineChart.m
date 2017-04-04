@@ -47,9 +47,10 @@
         self.myScrollView         = [[UIScrollView alloc]initWithFrame:CGRectMake(YZCLabelwidth, 0, frame.size.width-YZCLabelwidth, frame.size.height)];
         self.myScrollView.bounces = NO;
         [self addSubview:self.myScrollView];
-        self.isDrawPoint   = YES;
-        self.isShadow      = YES;
-        self.isHiddenUnit  = YES;
+        self.isDrawPoint       = YES;
+        self.isShadow          = YES;
+        self.isHiddenUnit      = YES;
+        self.isShowMaxMinValue = NO;
         self.intervalValue = 1;
     }
     return self;
@@ -206,11 +207,22 @@
             self.isLastIndex = YES;
         }
 
-        if (self.isDrawPoint) {
+        if (self.isDrawPoint) { //画点
             [self addPoint:point
                      index:index
                     isShow:isShowMaxAndMinPoint
                      value:[valueString integerValue]];
+        }
+        
+        //显示最大值或最小值
+        if (self.isShowMaxMinValue && ([valueString floatValue] == [[self.yLabels valueForKeyPath:@"@max.floatValue"] floatValue] || [valueString floatValue] == [[self.yLabels valueForKeyPath:@"@min.floatValue"] floatValue])) {
+            [self setupLastValueLabelWithView:point value:[valueString integerValue] grade:grade chartCavanHeight:chartCavanHeight];
+            if (!self.isDrawPoint) { //如果没有画点才画最大最小的点，不然就不重复画点
+                [self addPoint:point
+                         index:index
+                        isShow:isShowMaxAndMinPoint
+                         value:[valueString integerValue]];
+            }
         }
         index += 1;
     }
@@ -299,6 +311,19 @@
     anmi1.removedOnCompletion = NO;
 
     [gradientLayer addAnimation:anmi1 forKey:@"bounds"];
+}
+
+- (void)setupLastValueLabelWithView:(CGPoint)point value:(NSInteger)value grade:(CGFloat)grade chartCavanHeight:(CGFloat)chartCavanHeight {
+    UILabel *valueLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 70, 31)];
+    
+    valueLabel.text      = [NSString stringWithFormat:@"%zd", value];
+    valueLabel.textColor = [UIColor blackColor];
+    valueLabel.font      = [UIFont systemFontOfSize:10];
+    [valueLabel sizeToFit];
+    CGPoint labelPoint = CGPointMake(valueLabel.text.length > 3 ? point.x - 3 : point.x, chartCavanHeight - grade * chartCavanHeight+YZCLabelHeight - 15);
+    valueLabel.center        = CGPointMake(labelPoint.x + 20, labelPoint.y );
+    valueLabel.textAlignment = NSTextAlignmentCenter;
+    [self addSubview:valueLabel];
 }
 
 @end

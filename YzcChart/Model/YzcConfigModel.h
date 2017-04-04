@@ -15,6 +15,8 @@
 @property (nonatomic, assign) BOOL lineChartIsDrawPoint;
 ///涉嫌是否显示渐变色
 @property (nonatomic, assign) BOOL lineChartIsShadow;
+///是否显示最大最小值，默认不显示
+@property (nonatomic, assign) BOOL lineChartIsShowMaxMinVlaue;
 ///折线的颜色
 @property (nonatomic, strong) UIColor *lineChartLineColor;
 ///折线 横线的颜色
