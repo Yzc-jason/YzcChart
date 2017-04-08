@@ -79,22 +79,16 @@
 
 - (void)setXLabels:(NSMutableArray *)xLabels {
     _xLabels     = xLabels;
-    _xLabelWidth = (self.myScrollView.frame.size.width - YZCLabelwidth * 0.5)/xLabels.count;
+    _xLabelWidth = (self.myScrollView.frame.size.width )/xLabels.count;
 
     for (int i = 0; i < xLabels.count; i++) {
-        if (i%self.intervalValue == 0) {
+        if (i%self.intervalValue == 0 || i == xLabels.count - 1) {
             NSString *labelText = xLabels[i];
-            CGFloat labelX = i * self.xLabelWidth+YZCLabelwidth*0.5;
-            if (labelText.length > 3) {  //比较长的横坐标x值需要往左移
-                labelX = labelX - 7;
-            }
-            if (labelText.length == 2) {
-                labelX = labelX - 5;
-            }
+            CGFloat labelX = i * self.xLabelWidth+YZCLabelwidth*0.5 + 5;
             YzcLabel *label     = [[YzcLabel alloc] initWithFrame:CGRectMake(labelX, self.frame.size.height - YZCLabelHeight, self.xLabelWidth+10, YZCLabelHeight)];
             label.text = labelText;
             [label sizeToFit];
-            [self.myScrollView addSubview:label];
+            [self addSubview:label];
             if (self.isShowLastValue && i == xLabels.count - 1) {
                 label.textColor = [UIColor blackColor];
             }
@@ -210,7 +204,7 @@
             bar.percent = percent;
 
             //最后一个点显示数值在上面
-            if ((i == self.self.yLabels.count - 1) && self.isShowLastValue) {
+            if ((i == self.self.yLabels.count - 1) && self.isShowLastValue && percent) {
                 [self setupLastValueLabelWithView:bar value:[valueString integerValue] percent:percent chartCavanHeight:chartCavanHeight];
             }
         } else {
@@ -234,7 +228,7 @@
                 bar.percent      = totalPercent;
                 bar.leesPercent  = deepPercent;
                 //最后一个点显示数值在上面
-                if ((i == self.self.yLabels.count - 1) && self.isShowLastValue) {
+                if ((i == self.self.yLabels.count - 1) && self.isShowLastValue && (NSInteger)totalValue) {
                     [self setupLastValueLabelWithView:bar value:totalValue percent:totalPercent chartCavanHeight:bar.frame.size.height + 10];
                 }
             } else if (self.style == BarChartStyleRateRange) {
@@ -247,7 +241,6 @@
                 bar.startPercent = startPercent;
                 bar.percent      = totalPercent;
             }
-
            
         }
 

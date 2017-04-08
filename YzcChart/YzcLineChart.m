@@ -81,15 +81,19 @@
 - (void)setXLabels:(NSMutableArray *)xLabels {
     _xLabels = xLabels;
     NSInteger count = xLabels.count;
-    self.xLabelWidth = (self.myScrollView.frame.size.width - YZCLabelwidth * 0.5)/count;
+    self.xLabelWidth = (self.myScrollView.frame.size.width )/count;
 
     for (int i = 0; i < count; i++) {
         if (i%self.intervalValue == 0) {
             NSString *labelText = xLabels[i];
-            YzcLabel *label     = [[YzcLabel alloc] initWithFrame:CGRectMake(i * self.xLabelWidth+YZCLabelwidth*0.5 - 5, self.frame.size.height - YZCLabelHeight+5, self.xLabelWidth+10, YZCLabelHeight)];
+            CGFloat labelX      = i * self.xLabelWidth + YZCLabelwidth * 0.5 + 5;
+            if (count > 7) {
+                labelX -= 6;
+            }
+            YzcLabel *label     = [[YzcLabel alloc] initWithFrame:CGRectMake(labelX, self.frame.size.height - YZCLabelHeight+5, self.xLabelWidth+10, YZCLabelHeight)];
             label.text = labelText;
             [label sizeToFit];
-            [self.myScrollView addSubview:label];
+            [self addSubview:label];
 
             if (self.isHiddenLastValue && i == count - 1) {
                 label.textColor = [UIColor blackColor];
@@ -263,7 +267,7 @@
     [self.myScrollView addSubview:view];
 
     //最后一个点显示数值在上面
-    if (self.isLastIndex && self.isHiddenLastValue) {
+    if (self.isLastIndex && self.isHiddenLastValue && value) {
         UILabel *valueLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 31)];
         valueLabel.text      = [NSString stringWithFormat:@"%zd", value];
         valueLabel.textColor = [UIColor blackColor];
