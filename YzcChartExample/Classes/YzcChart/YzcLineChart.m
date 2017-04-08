@@ -263,7 +263,7 @@
     [self.myScrollView addSubview:view];
 
     //最后一个点显示数值在上面
-    if (self.isLastIndex && self.isHiddenLastValue) {
+    if (self.isLastIndex && self.isHiddenLastValue && value) {
         UILabel *valueLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 31)];
         valueLabel.text      = [NSString stringWithFormat:@"%zd", value];
         valueLabel.textColor = [UIColor blackColor];

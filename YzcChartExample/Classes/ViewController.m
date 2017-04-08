@@ -32,14 +32,14 @@
     [chartView showInView:self.scrollView];
 
     YzcChartView *chartView2 = [[YzcChartView alloc] initWithFrame:CGRectMake(10, 300, self.view.frame.size.width-30, 200) dataSource:self style:YzcChartStyleBar];
-    chartView2.intervalValue   = 6;
+    chartView2.intervalValue   = 4;
     chartView2.tag             = 200;
     chartView2.isShowLastValue = YES;
     [chartView2 showInView:self.scrollView];
 
 
     YzcChartView *chartView3 = [[YzcChartView alloc] initWithFrame:CGRectMake(10, 500, self.view.frame.size.width-30, 200) dataSource:self style:YzcChartStyleBar];
-    chartView3.intervalValue = 4;
+    chartView3.intervalValue = 6;
     chartView3.tag           = 300;
     chartView3.isShowLastValue = YES;
     [chartView3 showInView:self.scrollView];
@@ -79,7 +79,7 @@
         break;
 
     case 300:
-        for (int i = 0; i < 31; i++) {
+        for (int i = 0; i < 30; i++) {
             [x addObject:[NSString stringWithFormat:@"%zd", i]];
         }
         break;
@@ -115,7 +115,7 @@
         break;
 
     case 300:
-        for (int i = 0; i < 31; i++) {
+        for (int i = 0; i < 30; i++) {
             BarChartModel *model = [[BarChartModel alloc] init];
             model.SleepTimeLong = [self getRandomNumber:4 to:8];
             model.deepTimeLong  = [self getRandomNumber:1 to:8];

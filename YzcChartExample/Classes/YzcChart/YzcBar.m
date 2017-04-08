@@ -48,8 +48,14 @@
 
     UIBezierPath *path = [UIBezierPath bezierPath];
     if (self.isSvgRate) {
-        [path moveToPoint:CGPointMake(self.frame.size.width/2.0, (1-self.startPercent) * self.frame.size.height-5)];
-        [path addLineToPoint:CGPointMake(self.frame.size.width/2.0, (1 - percent) * self.frame.size.height+5 )];
+        if (self.startPercent == percent) { //两个值一样情况，为了效果只显示一条线
+            [path moveToPoint:CGPointMake(self.frame.size.width/2.0, (1 - percent) * self.frame.size.height)];
+            [path addLineToPoint:CGPointMake(self.frame.size.width/2.0, (1 - percent) * self.frame.size.height + 0.5 )];
+            self.progressLayer.lineCap   = kCALineCapButt;
+        }else {
+            [path moveToPoint:CGPointMake(self.frame.size.width/2.0, (1-self.startPercent) * self.frame.size.height-5)];
+            [path addLineToPoint:CGPointMake(self.frame.size.width/2.0, (1 - percent) * self.frame.size.height+5 )];
+        }
     }else{
         [path moveToPoint:CGPointMake(self.frame.size.width/2.0, self.frame.size.height+30)];
         [path addLineToPoint:CGPointMake(self.frame.size.width/2.0, (1 - percent) * self.frame.size.height+15)];

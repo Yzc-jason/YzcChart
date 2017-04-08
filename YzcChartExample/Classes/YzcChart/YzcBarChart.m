@@ -210,7 +210,7 @@
             bar.percent = percent;
 
             //最后一个点显示数值在上面
-            if ((i == self.self.yLabels.count - 1) && self.isShowLastValue) {
+            if ((i == self.self.yLabels.count - 1) && self.isShowLastValue && percent) {
                 [self setupLastValueLabelWithView:bar value:[valueString integerValue] percent:percent chartCavanHeight:chartCavanHeight];
             }
         } else {
@@ -234,7 +234,7 @@
                 bar.percent      = totalPercent;
                 bar.leesPercent  = deepPercent;
                 //最后一个点显示数值在上面
-                if ((i == self.self.yLabels.count - 1) && self.isShowLastValue) {
+                if ((i == self.self.yLabels.count - 1) && self.isShowLastValue && (NSInteger)totalValue) {
                     [self setupLastValueLabelWithView:bar value:totalValue percent:totalPercent chartCavanHeight:bar.frame.size.height + 10];
                 }
             } else if (self.style == BarChartStyleRateRange) {
@@ -247,10 +247,9 @@
                 bar.startPercent = startPercent;
                 bar.percent      = totalPercent;
             }
-
            
         }
-
+        
         [self.myScrollView addSubview:bar];
     }
 }
