@@ -117,7 +117,7 @@
 
     if (self.style == BarChartStyleNormal) {
         _yValueMax = [[self.yLabels valueForKeyPath:@"@max.floatValue"] floatValue];
-        _yValueMin = [[self.yLabels valueForKeyPath:@"@min.floatValue"] floatValue];
+        _yValueMin = 0;//[[self.yLabels valueForKeyPath:@"@min.floatValue"] floatValue];
         if (_yValueMax == _yValueMin) {
             _yValueMin = 0;
         }
@@ -224,7 +224,9 @@
                 float deepValue   = barModel.deepTimeLong;
                 float deepPercent = ((float)deepValue-_yValueMin) / ((float)_yValueMax-_yValueMin);
                 totalPercent = ((float)totalValue-_yValueMin) / ((float)_yValueMax-_yValueMin);
-
+                if (isnan(totalPercent) || totalPercent < 0) {
+                    totalPercent = 0;
+                }
                 if (totalPercent >= self.targetPercent && self.targetValue) {
                     bar.barColor = self.achieveTargetColor ? self.achieveTargetColor : [UIColor clearColor];
                 } else {

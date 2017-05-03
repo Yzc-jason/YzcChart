@@ -81,19 +81,15 @@
 - (void)setXLabels:(NSMutableArray *)xLabels {
     _xLabels = xLabels;
     NSInteger count = xLabels.count;
-    self.xLabelWidth = (self.myScrollView.frame.size.width )/count;
+    self.xLabelWidth = (self.myScrollView.frame.size.width - YZCLabelwidth * 0.5)/count;
 
     for (int i = 0; i < count; i++) {
-        if (i%self.intervalValue == 0) {
+        if (i%self.intervalValue == 0 || i == count - 1) {
             NSString *labelText = xLabels[i];
-            CGFloat labelX      = i * self.xLabelWidth + YZCLabelwidth * 0.5 + 5;
-            if (count > 7) {
-                labelX -= 6;
-            }
-            YzcLabel *label     = [[YzcLabel alloc] initWithFrame:CGRectMake(labelX, self.frame.size.height - YZCLabelHeight+5, self.xLabelWidth+10, YZCLabelHeight)];
+            YzcLabel *label     = [[YzcLabel alloc] initWithFrame:CGRectMake(i * self.xLabelWidth+YZCLabelwidth*0.5 - 5, self.frame.size.height - YZCLabelHeight+5, self.xLabelWidth+10, YZCLabelHeight)];
             label.text = labelText;
             [label sizeToFit];
-            [self addSubview:label];
+            [self.myScrollView addSubview:label];
 
             if (self.isHiddenLastValue && i == count - 1) {
                 label.textColor = [UIColor blackColor];
@@ -154,7 +150,11 @@
 #pragma mark - Draw points
 - (void)strokeChart {
     BOOL isShowMaxAndMinPoint = YES;
-
+    self.xLabelWidth = (self.myScrollView.frame.size.width - YZCLabelwidth * 0.5)/self.yLabels.count;
+    float maxValue   = [[self.yLabels valueForKeyPath:@"@max.floatValue"] floatValue];
+    if (maxValue == 0) {
+        return;
+    }
     //划线
     CAShapeLayer *chartLine = [CAShapeLayer layer];
     chartLine.lineCap   = kCALineCapRound; //设置线条拐角帽的样式

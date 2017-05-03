@@ -79,16 +79,22 @@
 
 - (void)setXLabels:(NSMutableArray *)xLabels {
     _xLabels     = xLabels;
-    _xLabelWidth = (self.myScrollView.frame.size.width )/xLabels.count;
+    _xLabelWidth = (self.myScrollView.frame.size.width - YZCLabelwidth * 0.5)/xLabels.count;
 
     for (int i = 0; i < xLabels.count; i++) {
-        if (i%self.intervalValue == 0 || i == xLabels.count - 1) {
+        if (i%self.intervalValue == 0) {
             NSString *labelText = xLabels[i];
-            CGFloat labelX = i * self.xLabelWidth+YZCLabelwidth*0.5 + 5;
+            CGFloat labelX = i * self.xLabelWidth+YZCLabelwidth*0.5;
+            if (labelText.length > 3) {  //比较长的横坐标x值需要往左移
+                labelX = labelX - 7;
+            }
+            if (labelText.length == 2) {
+                labelX = labelX - 5;
+            }
             YzcLabel *label     = [[YzcLabel alloc] initWithFrame:CGRectMake(labelX, self.frame.size.height - YZCLabelHeight, self.xLabelWidth+10, YZCLabelHeight)];
             label.text = labelText;
             [label sizeToFit];
-            [self addSubview:label];
+            [self.myScrollView addSubview:label];
             if (self.isShowLastValue && i == xLabels.count - 1) {
                 label.textColor = [UIColor blackColor];
             }
@@ -111,7 +117,7 @@
 
     if (self.style == BarChartStyleNormal) {
         _yValueMax = [[self.yLabels valueForKeyPath:@"@max.floatValue"] floatValue];
-        _yValueMin = [[self.yLabels valueForKeyPath:@"@min.floatValue"] floatValue];
+        _yValueMin = 0;//[[self.yLabels valueForKeyPath:@"@min.floatValue"] floatValue];
         if (_yValueMax == _yValueMin) {
             _yValueMin = 0;
         }
@@ -218,7 +224,9 @@
                 float deepValue   = barModel.deepTimeLong;
                 float deepPercent = ((float)deepValue-_yValueMin) / ((float)_yValueMax-_yValueMin);
                 totalPercent = ((float)totalValue-_yValueMin) / ((float)_yValueMax-_yValueMin);
-
+                if (isnan(totalPercent) || totalPercent < 0) {
+                    totalPercent = 0;
+                }
                 if (totalPercent >= self.targetPercent && self.targetValue) {
                     bar.barColor = self.achieveTargetColor ? self.achieveTargetColor : [UIColor clearColor];
                 } else {
@@ -243,7 +251,7 @@
             }
            
         }
-
+        
         [self.myScrollView addSubview:bar];
     }
 }
