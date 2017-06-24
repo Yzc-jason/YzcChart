@@ -13,28 +13,25 @@
 /**
  绘制虚线
  
- @param view 需要绘制到的view
- @param point 绘制位置
+ @param startPoint 绘制位置
  @param lineLength 虚线的宽度
  @param lineSpacing 虚线的间距
  @param lineColor 虚线的颜色
  */
-- (void)drawDashLine:(UIView *)view point:(CGPoint)point lineLength:(int)lineLength lineSpacing:(int)lineSpacing lineColor:(UIColor *)lineColor {
-    CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+- (void)drawDashLineWithStartPoint:(CGPoint)startPoint endPoint:(CGPoint)endPoint lineLength:(int)lineLength
+                       lineSpacing:(int)lineSpacing lineColor:(UIColor *)lineColor {
     
-    [shapeLayer setPosition:point];
+    CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+    [shapeLayer setPosition:startPoint];
     [shapeLayer setFillColor:[UIColor clearColor].CGColor];
-    //  设置虚线颜色
     [shapeLayer setStrokeColor:lineColor.CGColor];
-    //  设置虚线宽度
     [shapeLayer setLineWidth:0.5];
     [shapeLayer setLineJoin:kCALineJoinRound];
-    //  设置线宽，线间距
     [shapeLayer setLineDashPattern:[NSArray arrayWithObjects:[NSNumber numberWithInt:lineLength], [NSNumber numberWithInt:lineSpacing], nil]];
-    //  设置路径
+    
     CGMutablePathRef path = CGPathCreateMutable();
     CGPathMoveToPoint(path, NULL, 0, 0);
-    CGPathAddLineToPoint(path, NULL, view.frame.size.width-7, 0);
+    CGPathAddLineToPoint(path, NULL, endPoint.x, 0);
     [shapeLayer setPath:path];
     CGPathRelease(path);
     
@@ -62,4 +59,23 @@
     [self.layer insertSublayer:shapeLayer atIndex:0];
 }
 
+- (void)drawTipsViewWithFrame:(CGRect)frame {
+    NSInteger    triangleH = 3;
+    UIBezierPath *path     = [UIBezierPath bezierPathWithRoundedRect:frame cornerRadius:1];
+    
+    [path moveToPoint:CGPointMake(frame.origin.x + frame.size.width * 0.5 - triangleH, frame.origin.y + frame.size.height)];
+    [path addLineToPoint:CGPointMake(frame.origin.x + frame.size.width * 0.5 + triangleH, frame.origin.y + frame.size.height)];
+    [path addLineToPoint:CGPointMake(frame.origin.x + frame.size.width * 0.5, frame.origin.y + frame.size.height + triangleH)];
+    
+    CAShapeLayer *shapeLayer = [[CAShapeLayer alloc] init];
+    shapeLayer.fillColor = [[UIColor blackColor] colorWithAlphaComponent:0.7].CGColor;
+    shapeLayer.path      = path.CGPath;
+    [self.layer insertSublayer:shapeLayer atIndex:(int)(self.subviews.count - 2)];
+}
+
+- (void)setWidth:(CGFloat)width {
+    CGRect frame = self.frame;
+    frame.size.width = width;
+    self.frame        = frame;
+}
 @end

@@ -36,19 +36,23 @@
 }
 
 - (void)setPercent:(CGFloat)percent {
-    if (percent == 0) {
-        percent                   = 0.1;
-        self.progressLayer.strokeColor = self.emptyDataBarColor.CGColor;
-    } else {
-        percent                   = percent < 0.1 ? 0.1 : percent;
-        self.progressLayer.strokeColor = self.barColor.CGColor;
+    if (percent > 0 && percent < 0.1) {
+        percent = 0.1;
     }
-
+//    if (percent == 0.1) {
+//        if (IS_IPHONE5S) {
+//            percent = 0.13;
+//        }else if (IS_IPHONE4S) {
+//            percent = 0.16;
+//        }
+//    }
+    
     _percent = percent;
+    self.progressLayer.strokeColor = self.barColor.CGColor;
 
     UIBezierPath *path = [UIBezierPath bezierPath];
     if (self.isSvgRate) {
-        if (self.startPercent == percent) {
+        if (self.startPercent == percent) { //两个值一样情况，为了效果只显示一条线
             [path moveToPoint:CGPointMake(self.frame.size.width/2.0, (1 - percent) * self.frame.size.height)];
             [path addLineToPoint:CGPointMake(self.frame.size.width/2.0, (1 - percent) * self.frame.size.height + 0.5 )];
             self.progressLayer.lineCap   = kCALineCapButt;

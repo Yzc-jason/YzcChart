@@ -17,6 +17,9 @@
 #define YZCTagLabelwidth 80
 #define LINE_COUNT       3
 
+#define IS_IPHONE4S      ([UIScreen mainScreen].bounds.size.height <= 480)
+#define IS_IPHONE5S      ([UIScreen mainScreen].bounds.size.height == 568)
+
 //范围
 struct Range {
     CGFloat max;

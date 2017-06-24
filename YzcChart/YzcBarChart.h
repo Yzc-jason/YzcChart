@@ -33,10 +33,11 @@ typedef NS_ENUM (NSInteger, BarChartStyle) {
 @property (nonatomic, assign) BOOL isHiddenUnit; /**是否显示左上角单位，默认隐藏*/
 @property (nonatomic, assign) BOOL isShowLastValue; /**最后一个数值是否显示在柱状上面,默认隐藏*/
 
-
 @property (nonatomic, assign) CGRange chooseRange;
 
 @property (nonatomic, assign) BarChartStyle style;
+
+@property (nonatomic, strong) UIFont *textFont;
 
 - (void)strokeChart;
 

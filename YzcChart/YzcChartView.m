@@ -10,7 +10,7 @@
 
 @interface YzcChartView ()
 
-@property (assign, nonatomic) id<YzcChartDataSource> dataSource;
+@property (weak, nonatomic) id<YzcChartDataSource> dataSource;
 @property (strong, nonatomic) YzcLineChart *lineChart;
 @property (strong, nonatomic) YzcBarChart *barChart;
 
@@ -45,6 +45,7 @@
             [self.lineChart setChooseRange:[self.dataSource chartRange:self]];
         }
 
+        BOOL isSegment = NO;
         if ([self.dataSource respondsToSelector:@selector(chartEffectConfig:)]) {
             YzcConfigModel *model = [self.dataSource chartEffectConfig:self];
             self.lineChart.lineColor            = model.lineChartLineColor;
@@ -53,8 +54,13 @@
             self.lineChart.isDrawPoint          = model.lineChartIsDrawPoint;
             self.lineChart.isShadow             = model.lineChartIsShadow;
             self.lineChart.isShowMaxMinValue    = model.lineChartIsShowMaxMinVlaue;
+            self.lineChart.isHiddenDashedLine   = model.isHiddenDashedline;
+            if (model.isSegment) {
+                isSegment = model.isSegment;
+            }
         }
         
+        self.lineChart.textFont          = self.textFont;
         self.lineChart.isHiddenLastValue = self.isShowLastValue;
         self.lineChart.isHiddenUnit      = self.isHiddenUnit ? self.isHiddenUnit : YES;
         self.lineChart.unitString        = self.unitString;
@@ -62,7 +68,11 @@
         [self.lineChart setYLabels:[self.dataSource chartConfigAxisYValue:self]];
         [self.lineChart setXLabels:[self.dataSource chartConfigAxisXValue:self]];
 
-        [self.lineChart strokeChart];
+        if (isSegment) {
+            [self.lineChart segmentedStrokeChart];
+        }else{
+            [self.lineChart strokeChart];
+        }
     } else if (self.chartStyle == YzcChartStyleBar) {
         if (!self.barChart) {
             self.barChart = [[YzcBarChart alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
@@ -88,6 +98,7 @@
             self.barChart.style = [self.dataSource barChartStyle:self];
         }
 
+        self.barChart.textFont        = self.textFont;
         self.barChart.isShowLastValue = self.isShowLastValue;
         self.barChart.isHiddenUnit    = self.isHiddenUnit ? self.isHiddenUnit : YES;
         self.barChart.unitString      = self.unitString;

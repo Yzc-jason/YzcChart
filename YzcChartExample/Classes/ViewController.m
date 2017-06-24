@@ -25,15 +25,17 @@
     self.scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
     [self.view addSubview:self.scrollView];
 
-    YzcChartView *chartView = [[YzcChartView alloc] initWithFrame:CGRectMake(10, 100, 350, 200) dataSource:self style:YzcChartStyleLine];
+    YzcChartView *chartView = [[YzcChartView alloc] initWithFrame:CGRectMake(10, 100, self.view.frame.size.width-30, 200) dataSource:self style:YzcChartStyleLine];
     chartView.tag             = 100;
-    chartView.intervalValue   = 4;
-    chartView.isShowLastValue = NO;
+    chartView.intervalValue   = 6;
+    chartView.unitString      = @"(步)";
+    chartView.isShowLastValue = YES;
     [chartView showInView:self.scrollView];
 
     YzcChartView *chartView2 = [[YzcChartView alloc] initWithFrame:CGRectMake(10, 300, self.view.frame.size.width-30, 200) dataSource:self style:YzcChartStyleBar];
-    chartView2.intervalValue   = 4;
+    chartView2.intervalValue   = 1;
     chartView2.tag             = 200;
+    chartView2.unitString      = @"(步)";
     chartView2.isShowLastValue = YES;
     [chartView2 showInView:self.scrollView];
 
@@ -63,8 +65,15 @@
 
     switch (chart.tag) {
     case 100:
-        for (int i = 0; i < 25; i++) {
-            [x addObject:[NSString stringWithFormat:@"%zd", i]];
+        for (int i = 0; i < 30; i++) {
+//            if (i == 0) {
+//                [x addObject:@"6月24日"];
+//            }else if ( i== 29){
+//                [x addObject:@"今日"];
+//            }else{
+//                
+                [x addObject:[NSString stringWithFormat:@"%zd", i]];
+//            }
         }
         break;
     case 200:
@@ -102,22 +111,21 @@
 
     switch (chart.tag) {
     case 100:
-        for (int i = 0; i < 25; i++) {
-            [y addObject:[NSNumber numberWithInt:arc4random()%100]];
-
+        for (int i = 0; i < 30; i++) {
+            [y addObject:[NSNumber numberWithInt:[self getRandomNumber:0 to:100]]];
         }
         break;
 
     case 200:
         for (int i = 0; i < 7; i++) {
-            [y addObject:[NSNumber numberWithInt:[self getRandomNumber:1000 to:20000]]];
+                [y addObject:[NSNumber numberWithInt:[self getRandomNumber:0 to:10000]]];
         }
         break;
 
     case 300:
         for (int i = 0; i < 30; i++) {
             BarChartModel *model = [[BarChartModel alloc] init];
-            model.SleepTimeLong = [self getRandomNumber:4 to:8];
+            model.SleepTimeLong = 8;
             model.deepTimeLong  = [self getRandomNumber:1 to:8];
             [y addObject:model];
         }
@@ -166,18 +174,21 @@
 
     if (chart.tag == 100) {
         UIColor *color = [UIColor colorWithRed:251/255.0 green:219/255.0 blue:92/255.0 alpha:1];
-        model.lineChartIsShadow             = NO;
-        model.lineChartIsDrawPoint          = NO;
+        model.lineChartIsShadow             = YES;
+        model.lineChartIsDrawPoint          = YES;
         model.lineChartValuePointColor      = color;
         model.lineChartHorizontalLinecColor = color;
         model.lineChartLineColor            = color;
-        model.lineChartIsShowMaxMinVlaue = YES;
+//        model.lineChartIsShowMaxMinVlaue = YES;
+        
+         
     } else {
         model.barChartLessBarColor         = [UIColor blueColor];
-        model.barChartHorizontalLinecColor = [UIColor grayColor];
-        model.barChartAchieveTargetColor   = [UIColor redColor];
-        model.barChartEmptyDataBarColor    = [UIColor clearColor];
+//        model.barChartHorizontalLinecColor = [UIColor grayColor];
+        model.barChartAchieveTargetColor   = [[UIColor blueColor] colorWithAlphaComponent: 0.5];
+        model.barChartEmptyDataBarColor    = [[UIColor blueColor] colorWithAlphaComponent: 0.5];
         model.barColor                     = [UIColor colorWithRed:251/255.0 green:219/255.0 blue:92/255.0 alpha:1];
+       
     }
 
     return model;
@@ -194,7 +205,7 @@
 
 - (NSInteger)barChartTargetValue:(YzcChartView *)chart {
     if (chart.tag == 200) {
-        return 15000;
+        return 8000;
     }else if (chart.tag == 300) {
         return 8;
     }

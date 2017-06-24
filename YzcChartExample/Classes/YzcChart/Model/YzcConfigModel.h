@@ -23,6 +23,11 @@
 @property (nonatomic, strong) UIColor *lineChartHorizontalLinecColor;
 ///折线 数值点的颜色
 @property (nonatomic, strong) UIColor *lineChartValuePointColor;
+///是否显示虚线
+@property (nonatomic, assign) BOOL isHiddenDashedline;
+///是否要分段
+@property (nonatomic, assign) BOOL isSegment;
+
 
 ///柱状条的颜色
 @property (nonatomic, strong) UIColor *barColor;

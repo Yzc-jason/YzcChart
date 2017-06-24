@@ -68,6 +68,8 @@ typedef NS_ENUM (NSInteger, YzcChartStyle){
 ///横坐标显示间隔数
 @property (nonatomic, assign) NSInteger intervalValue;
 
+@property (nonatomic, strong) UIFont *textFont;
+
 - (id)initWithFrame:(CGRect)rect dataSource:(id<YzcChartDataSource>)dataSource style:(YzcChartStyle)style;
 
 - (void)showInView:(UIView *)view;

@@ -17,8 +17,8 @@
         
         [self setMinimumScaleFactor:5.0f];
         [self setNumberOfLines:1];
-        [self setFont:[UIFont boldSystemFontOfSize:12.0f]];
-        [self setTextColor: [[UIColor grayColor] colorWithAlphaComponent:0.5]];
+        [self setFont:[UIFont systemFontOfSize:10.0f]];
+        [self setTextColor: [[UIColor blackColor] colorWithAlphaComponent:0.2]];
         [self setTextAlignment:NSTextAlignmentCenter];
         self.userInteractionEnabled = YES;
     }

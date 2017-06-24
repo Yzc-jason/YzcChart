@@ -19,6 +19,7 @@
 @property (nonatomic, assign) BOOL isHiddenLastValue; //最后一个数值是否显示在柱状上面,默认隐藏
 @property (nonatomic, assign) BOOL isHiddenUnit; //是否显示左上角单位，默认隐藏
 @property (nonatomic, assign) BOOL isShowMaxMinValue; //是否显示最大最小值，默认不显示
+@property (nonatomic, assign) BOOL isHiddenDashedLine;
 
 @property (nonatomic, assign) NSInteger intervalValue;// x值显示间隔数
 @property (nonatomic, copy) NSString    *unitString;
@@ -29,7 +30,9 @@
 
 @property (nonatomic, assign) CGRange chooseRange;
 
+@property (nonatomic, strong) UIFont *textFont;
 
 - (void)strokeChart;
+- (void)segmentedStrokeChart;
 
 @end

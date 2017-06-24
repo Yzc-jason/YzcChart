@@ -70,4 +70,8 @@ pod 'YzcChart'
 ///横坐标显示间隔数
 @property (nonatomic, assign) NSInteger intervalValue;
 
+@property (nonatomic, strong) UIFont *textFont;
+
 ```
+
+

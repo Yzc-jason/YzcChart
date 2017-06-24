@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "YzcChart"
-  s.version      = "0.1.5"
+  s.version      = "1.0"
   s.summary      = "Some simple charts"
   s.homepage     = "https://github.com/Yzc-jason/YzcChart"
   s.license      = "MIT"
